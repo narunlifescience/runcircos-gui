@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>runCircos-gui v0.1</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/icon/icon/ncirco.png</normaloff>:/icon/icon/ncirco.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="3" column="5">
+     <widget class="QPushButton" name="conf_file_pushButton">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Browse</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/icons.qrc">
+        <normaloff>:/icons/icons/open_file.png</normaloff>:/icons/icons/open_file.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="conf_file_label">
+      <property name="text">
+       <string>Select .conf file       :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="out_folder_label">
+      <property name="text">
+       <string>Output folder          :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="out_file_label">
+      <property name="text">
+       <string>Output file name     :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" colspan="5">
+     <widget class="QCheckBox" name="imageciew_checkBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>Open plot after Circos execution in default photoviewer</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="5">
+     <widget class="QComboBox" name="comboBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" colspan="2">
+     <widget class="QLabel" name="cmdline_label">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>CMD line :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="3" colspan="3">
+     <widget class="QCheckBox" name="edit_cmdline_checkBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>Edit CMD line</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" colspan="6">
+     <widget class="QTextEdit" name="cmdfinal_textEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6" rowspan="11">
+     <widget class="QGroupBox" name="exec_status_groupBox">
+      <property name="title">
+       <string>Execution Status :</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QProgressBar" name="progressBar">
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="Save_stdout_pushButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../data/icons.qrc">
+           <normaloff>:/icons/icons/save.png</normaloff>:/icons/icons/save.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>24</width>
+           <height>24</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../data/icons.qrc">
+           <normaloff>:/icons/icons/stop.png</normaloff>:/icons/icons/stop.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>24</width>
+           <height>24</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="3">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Standard Output :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="exec_status_plainTextEdit"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Standard Error :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="exec_status_err_textEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="5" column="2" colspan="3">
+     <widget class="QLineEdit" name="out_file_plainTextEdit"/>
+    </item>
+    <item row="2" column="2" colspan="3">
+     <widget class="QLineEdit" name="circos_bindir_plainTextEdit"/>
+    </item>
+    <item row="10" column="4" colspan="2">
+     <widget class="QPushButton" name="run_ncircos_button">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string> Run N-Circos</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/icons.qrc">
+        <normaloff>:/icons/icons/run.png</normaloff>:/icons/icons/run.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2" colspan="3">
+     <widget class="QLineEdit" name="conf_file_plainTextEdit"/>
+    </item>
+    <item row="4" column="2" colspan="3">
+     <widget class="QLineEdit" name="out_folder_plainTextEdit"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="mandatory_conffile_label">
+      <property name="text">
+       <string>*</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QPushButton" name="circos_bindir_pushButton">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Browse</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/icons.qrc">
+        <normaloff>:/icons/icons/browse_folder.png</normaloff>:/icons/icons/browse_folder.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="6">
+     <widget class="QGroupBox" name="ext_op_args_groupBox">
+      <property name="title">
+       <string>Extended Options with arguments</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QCheckBox" name="ext_op_args_enable_checkBox">
+         <property name="text">
+          <string>Enable</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="ext_op_args_plainTextEdit"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="mandatory_circosbindir_label">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>*</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="circos_bindir_label">
+      <property name="text">
+       <string>Circos/bin directory :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="5">
+     <widget class="QPushButton" name="out_folder_pushButton">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Browse</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/icons.qrc">
+        <normaloff>:/icons/icons/browse_folder.png</normaloff>:/icons/icons/browse_folder.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0" colspan="2">
+     <widget class="QLabel" name="mandatory_label">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>* mandatory</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QGroupBox" name="toggle_groupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Toggle Options</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_12">
+       <item>
+        <widget class="QRadioButton" name="t_default_radioButton">
+         <property name="text">
+          <string>default</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="t_image_map_use_radioButton">
+         <property name="text">
+          <string>image_map_use</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="t_silent_radioButton">
+         <property name="text">
+          <string>silent</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="t_cdump_radioButton">
+         <property name="text">
+          <string>cdump</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="t_debug_radioButton">
+         <property name="text">
+          <string>debug</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="t_help_radioButton">
+         <property name="text">
+          <string>help</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="t_man_radioButton">
+         <property name="text">
+          <string>man</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="t_version_radioButton">
+         <property name="text">
+          <string>version</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="2" colspan="4">
+     <widget class="QGroupBox" name="ntoggle_groupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Negatable Toggle Options</string>
+      </property>
+      <widget class="QGroupBox" name="nto_showticklabels_noshowticklabels_groupBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>150</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QRadioButton" name="nt_showticklabels_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>131</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>show_tick_labels</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="nt_noshowticklabels_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>20</y>
+          <width>151</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>no show_tick_labels</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="nto_showticks_noshowticks_groupBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>129</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QRadioButton" name="nt_showticks_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>show_ticks</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="nt_noshowticks_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>20</y>
+          <width>111</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>no show_ticks</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="nto_paranoid_noparanoid_groupBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>109</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QRadioButton" name="nt_paranoid_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>paranoid</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="nt_noparanoid_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>20</y>
+          <width>101</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>no paranoid</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="nto_warnings_nowarnings_groupBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>89</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QRadioButton" name="nt_warnings_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>warnings</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="nt_nowarnings_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>no warnings</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="nto_svg_nosvg_groupBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>69</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QRadioButton" name="nt_svg_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>svg</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="nt_nosvg_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>no svg</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="nto_png_nopng_groupBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>50</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <widget class="QRadioButton" name="nt_png_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>png</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="nt_nopng_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>20</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>no png</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="nto_default_groupBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>301</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::DefaultContextMenu</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QRadioButton" name="nt_default_radioButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>102</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>default</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1024</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>N-Circos</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen_settings"/>
+    <addaction name="actionSave_settings"/>
+    <addaction name="actionEdit_conf_file"/>
+    <addaction name="actionEdit_other_files"/>
+    <addaction name="actionClear_exec_status"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuPerl">
+    <property name="title">
+     <string>Perl</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_version"/>
+    <addaction name="actionInstall_perl_package"/>
+    <addaction name="actionCommand_line_CMD"/>
+   </widget>
+   <widget class="QMenu" name="menuCircos">
+    <property name="title">
+     <string>Circos</string>
+    </property>
+    <addaction name="actionSet_circos_bin_directory"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionOnline_documentation"/>
+    <addaction name="actionQuick_referance_manuel_QRM"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuPerl"/>
+   <addaction name="menuCircos"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/new.jpg</normaloff>:/icons/icons/new.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/other_icons/other_icons/Cut.png</normaloff>:/other_icons/other_icons/Cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/other_icons/other_icons/copy.jpg</normaloff>:/other_icons/other_icons/copy.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/other_icons/other_icons/paste.png</normaloff>:/other_icons/other_icons/paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionOpen_settings">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/open_settings.png</normaloff>:/icons/icons/open_settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open settings</string>
+   </property>
+  </action>
+  <action name="actionSave_settings">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/Save_Settings.png</normaloff>:/icons/icons/Save_Settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save settings</string>
+   </property>
+  </action>
+  <action name="actionEdit_conf_file">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/configuration_edit.png</normaloff>:/icons/icons/configuration_edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit .conf file</string>
+   </property>
+  </action>
+  <action name="actionEdit_other_files">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/edit.png</normaloff>:/icons/icons/edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit other files</string>
+   </property>
+  </action>
+  <action name="actionCheck_version">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/perl.png</normaloff>:/icons/icons/perl.png</iconset>
+   </property>
+   <property name="text">
+    <string>Check perl</string>
+   </property>
+  </action>
+  <action name="actionInstall_perl_package">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/perl_package.png</normaloff>:/icons/icons/perl_package.png</iconset>
+   </property>
+   <property name="text">
+    <string>Install perl package</string>
+   </property>
+  </action>
+  <action name="actionCommand_line_CMD">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/cmd.png</normaloff>:/icons/icons/cmd.png</iconset>
+   </property>
+   <property name="text">
+    <string>Check perl module installation status</string>
+   </property>
+  </action>
+  <action name="actionSet_circos_bin_directory">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/set_directory.png</normaloff>:/icons/icons/set_directory.png</iconset>
+   </property>
+   <property name="text">
+    <string>Set circos/bin directory</string>
+   </property>
+  </action>
+  <action name="actionOnline_documentation">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/OnlineHelp.png</normaloff>:/icons/icons/OnlineHelp.png</iconset>
+   </property>
+   <property name="text">
+    <string>Online documentation</string>
+   </property>
+  </action>
+  <action name="actionQuick_referance_manuel_QRM">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/qrf.png</normaloff>:/icons/icons/qrf.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quick referance manuel (QRM)</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/about.png</normaloff>:/icons/icons/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionClear_exec_status">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/Clear.png</normaloff>:/icons/icons/Clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clear exec status</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../data/icons.qrc">
+     <normaloff>:/icons/icons/quit.png</normaloff>:/icons/icons/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../data/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

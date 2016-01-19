@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ncirco.png</file>
+        <file>about_image.png</file>
+        <file>splash.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>icons/about.jpg</file>
+        <file>icons/about.png</file>
+        <file>icons/browse_folder.png</file>
+        <file>icons/Clear.png</file>
+        <file>icons/cmd.png</file>
+        <file>icons/configuration_edit.png</file>
+        <file>icons/copy.jpg</file>
+        <file>icons/Cut.png</file>
+        <file>icons/edit.png</file>
+        <file>icons/new.jpg</file>
+        <file>icons/OnlineHelp.png</file>
+        <file>icons/open_file.png</file>
+        <file>icons/open_settings.png</file>
+        <file>icons/paste.png</file>
+        <file>icons/perl_package.png</file>
+        <file>icons/perl.png</file>
+        <file>icons/qrf.png</file>
+        <file>icons/quit.png</file>
+        <file>icons/run.png</file>
+        <file>icons/Save_Settings.png</file>
+        <file>icons/save.png</file>
+        <file>icons/set_directory.png</file>
+        <file>icons/stop.png</file>
+    </qresource>
+</RCC>
