@@ -15,25 +15,31 @@
    along with runcircos-gui.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "about_box.h"
-#include "ui_about_box.h"
-
 #include "icon_loader.h"
 
-about_box::about_box(QWidget *parent)
-    : QDialog(parent),
-      ui(new Ui::about_box) {
-  ui->setupUi(this);
+#include <QtDebug>
+#include <QFile>
 
-  ui->plainTextEdit->setStyleSheet("QPlainTextEdit { background-color:"
-                                   " transparent; }");
-  ui->plainTextEdit->setReadOnly(true);
-}
+QIcon icon_loader::load(const QString &name) {
+  QIcon ret;
 
-about_box::~about_box() {
-  delete ui;
-}
+  if (name.isEmpty())
+    return ret;
 
-void about_box::on_ok_pushButton_clicked() {
-  close();
-}
+#if QT_VERSION >= 0x040600
+  // Try to load it from the theme initially
+  ret = QIcon::fromTheme(name);
+  if (!ret.isNull())
+    return ret;
+#endif
+
+  // Otherwise use our fallback theme
+  const QString filename(":/icons/" + name + ".png");
+
+  if (QFile::exists(filename))
+    ret.addFile(filename);
+
+  if (ret.isNull())
+    qDebug() << "Couldn't load icon" << name;
+  return ret;
+} 

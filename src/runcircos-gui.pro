@@ -31,12 +31,14 @@ SOURCES   += main.cpp\
              mainwindow.cpp \
              about_box.cpp \
              circosbindir_set.cpp \
-             module_installer.cpp
+             module_installer.cpp \
+             icon_loader.cpp
 
 HEADERS   += mainwindow.h \
              about_box.h \
              circosbindir_set.h \
-             module_installer.h
+             module_installer.h \
+             icon_loader.h
 
 FORMS     += mainwindow.ui \
              about_box.ui \
