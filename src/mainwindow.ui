@@ -14,8 +14,8 @@
    <string>runCircos-gui v0.1</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icon/icon/ncirco.png</normaloff>:/icon/icon/ncirco.png</iconset>
+   <iconset resource="../data/icons.qrc">
+    <normaloff>:/runcircos-gui.png</normaloff>:/runcircos-gui.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">

@@ -17,8 +17,8 @@
    <string>About runCircos-gui</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>other_icons/about.png</normaloff>other_icons/about.png</iconset>
+   <iconset resource="../data/icons.qrc">
+    <normaloff>:/icons/icons/about.png</normaloff>:/icons/icons/about.png</iconset>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">

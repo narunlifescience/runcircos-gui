@@ -1,8 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>ncirco.png</file>
         <file>about_image.png</file>
         <file>splash.png</file>
+        <file>runcircos-gui2.png</file>
+        <file>runcircos-gui2.ico</file>
+        <file>runcircos-gui.png</file>
+        <file>runcircos-gui.ico</file>
     </qresource>
     <qresource prefix="/icons">
         <file>icons/about.jpg</file>
