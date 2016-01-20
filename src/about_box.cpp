@@ -25,6 +25,9 @@ about_box::about_box(QWidget *parent)
       ui(new Ui::about_box) {
   ui->setupUi(this);
 
+  // Load icons
+  setWindowIcon(icon_loader::load("help-about"));
+
   ui->plainTextEdit->setStyleSheet("QPlainTextEdit { background-color:"
                                    " transparent; }");
   ui->plainTextEdit->setReadOnly(true);

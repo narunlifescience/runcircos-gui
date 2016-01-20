@@ -20,6 +20,8 @@
 #include "about_box.h"
 #include "circosbindir_set.h"
 #include "module_installer.h"
+#include "icon_loader.h"
+
 #include <QProcess>
 #include <QFileDialog>
 #include <QDesktopServices>
@@ -28,56 +30,95 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QDesktopWidget>
+#include <QtCore>
 
 
 QString circosbindir, conffile, outputdir, outfile, extopargs, to, nto_png, nto_svg, nto_warnings, nto_paranoid, nto_showticks, nto_showticklabels, cmdfinal;
 bool image_show_status = false;
 
 // start mainwindow
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-    QRect desktopRect = QApplication::desktop()->availableGeometry(this);
-    QPoint center = desktopRect.center();
-    this->move((center.x() - (width()/2)), (center.y() - (height()/2)) );
-    circosbindir = "[circos/bin_dir...]";
-    conffile = "[.conf_file...]";
-    ui->nt_default_radioButton->setChecked(true);
-    ui->t_default_radioButton->setChecked(true);
-    ui->nto_default_groupBox->setStyleSheet("QGroupBox {border : 0;}");
-    ui->nto_png_nopng_groupBox->setStyleSheet("QGroupBox {border : 0;}");
-    ui->nto_svg_nosvg_groupBox->setStyleSheet("QGroupBox {border : 0;}");
-    ui->nto_warnings_nowarnings_groupBox->setStyleSheet("QGroupBox {border : 0;}");
-    ui->nto_paranoid_noparanoid_groupBox->setStyleSheet("QGroupBox {border : 0;}");
-    ui->nto_showticks_noshowticks_groupBox->setStyleSheet("QGroupBox {border : 0;}");
-    ui->nto_showticklabels_noshowticklabels_groupBox->setStyleSheet("QGroupBox {border : 0;}");
-    ui->mandatory_label->setStyleSheet("QLabel { color : red; }");
-    ui->mandatory_circosbindir_label->setStyleSheet("QLabel { color : red; }");
-    ui->mandatory_conffile_label->setStyleSheet("QLabel { color : red; }");
-    ui->exec_status_plainTextEdit->setStyleSheet("QPlainTextEdit { background-color : lightblack; color : green; border-radius: 5px; }");
-    ui->exec_status_err_textEdit->setStyleSheet("QPlainTextEdit { background-color : lightblack; color : red; border-radius: 5px; }");
-    ui->exec_status_plainTextEdit->setReadOnly(true);
-    ui->exec_status_err_textEdit->setReadOnly(true);
-    ui->cmdfinal_textEdit->setReadOnly(true);
-    ui->cmdfinal_textEdit->setStyleSheet("QTextEdit { background-color : lightgrey;}");
-    ui->ext_op_args_plainTextEdit->setReadOnly(true);
-    ui->ext_op_args_plainTextEdit->setStyleSheet("QLineEdit { background-color : lightgrey;}");
-    setcircosbindirdefault ();
-    if (ui->circos_bindir_plainTextEdit->text().trimmed().count() == 0)
-    {
-        ui->circos_bindir_plainTextEdit->setStyleSheet("QLineEdit { border: 1px solid red; border-radius: 2px; }");
-    }
-    if (ui->conf_file_plainTextEdit->text().trimmed().count() == 0)
-    {
-        ui->conf_file_plainTextEdit->setStyleSheet("QLineEdit { border: 1px solid red; border-radius: 2px; }");
-    }
-    QStringList list=(QStringList()<<"png"<<"svg");
-    ui->comboBox->addItems(list);
-    ui->comboBox->setVisible(false);
-    enablectrl_runtime();
-    update_cmdfinal();
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent),
+      ui(new Ui::MainWindow) {
+  ui->setupUi(this);
+
+  //  Load icons
+  setWindowIcon(icon_loader::load("runcircos-gui"));
+  ui->circos_bindir_pushButton->setIcon(icon_loader::load(
+      "document-open-folder"));
+  ui->out_folder_pushButton->setIcon(icon_loader::load(
+      "document-open-folder"));
+  ui->conf_file_pushButton->setIcon(icon_loader::load(
+      "document-open"));
+  ui->run_ncircos_button->setIcon(icon_loader::load(
+      "media-playback-start"));
+  ui->Save_stdout_pushButton->setIcon(icon_loader::load(
+      "document-save"));
+  ui->stop_pushButton->setIcon(icon_loader::load("stop"));
+  ui->actionNew->setIcon(icon_loader::load("document-new"));
+  ui->actionOpen_settings->setIcon(icon_loader::load(
+      "document-open"));
+  ui->actionSave_settings->setIcon(icon_loader::load(
+      "document-save"));
+  ui->actionEdit_conf_file->setIcon(icon_loader::load(
+      "configure"));
+  ui->actionEdit_other_files->setIcon(icon_loader::load(
+      "document-edit"));
+  ui->actionClear_exec_status->setIcon(icon_loader::load(
+      "edit-clear"));
+  ui->actionQuit->setIcon(icon_loader::load(
+      "application-exit"));
+  ui->actionCheck_version->setIcon(icon_loader::load(
+      "application-x-shellscript"));
+  ui->actionInstall_perl_package->setIcon(icon_loader::load(
+      "package-install"));
+  ui->actionCommand_line_CMD->setIcon(icon_loader::load(
+      "terminal"));
+  ui->actionSet_circos_bin_directory->setIcon(icon_loader::load(
+      "folder"));
+  ui->actionOnline_documentation->setIcon(icon_loader::load(
+      "help-contents"));
+  ui->actionQuick_referance_manuel_QRM->setIcon(icon_loader::load(
+      "application-pdf"));
+  ui->actionAbout->setIcon(icon_loader::load("help-about"));
+
+  QRect desktopRect = QApplication::desktop()->availableGeometry(this);
+  QPoint center = desktopRect.center();
+  this->move((center.x() - (width()/2)), (center.y() - (height()/2)) );
+  circosbindir = "[circos/bin_dir...]";
+  conffile = "[.conf_file...]";
+  ui->nt_default_radioButton->setChecked(true);
+  ui->t_default_radioButton->setChecked(true);
+  ui->nto_default_groupBox->setStyleSheet("QGroupBox {border : 0;}");
+  ui->nto_png_nopng_groupBox->setStyleSheet("QGroupBox {border : 0;}");
+  ui->nto_svg_nosvg_groupBox->setStyleSheet("QGroupBox {border : 0;}");
+  ui->nto_warnings_nowarnings_groupBox->setStyleSheet("QGroupBox {border : 0;}");
+  ui->nto_paranoid_noparanoid_groupBox->setStyleSheet("QGroupBox {border : 0;}");
+  ui->nto_showticks_noshowticks_groupBox->setStyleSheet("QGroupBox {border : 0;}");
+  ui->nto_showticklabels_noshowticklabels_groupBox->setStyleSheet("QGroupBox {border : 0;}");
+  ui->mandatory_label->setStyleSheet("QLabel { color : red; }");
+  ui->mandatory_circosbindir_label->setStyleSheet("QLabel { color : red; }");
+  ui->mandatory_conffile_label->setStyleSheet("QLabel { color : red; }");
+  ui->exec_status_plainTextEdit->setStyleSheet("QPlainTextEdit { background-color : lightblack; color : green; border-radius: 5px; }");
+  ui->exec_status_err_textEdit->setStyleSheet("QPlainTextEdit { background-color : lightblack; color : red; border-radius: 5px; }");
+  ui->exec_status_plainTextEdit->setReadOnly(true);
+  ui->exec_status_err_textEdit->setReadOnly(true);
+  ui->cmdfinal_textEdit->setReadOnly(true);
+  ui->cmdfinal_textEdit->setStyleSheet("QTextEdit { background-color : lightgrey;}");
+  ui->ext_op_args_plainTextEdit->setReadOnly(true);
+  ui->ext_op_args_plainTextEdit->setStyleSheet("QLineEdit { background-color : lightgrey;}");
+  setcircosbindirdefault ();
+  if (ui->circos_bindir_plainTextEdit->text().trimmed().count() == 0) {
+     ui->circos_bindir_plainTextEdit->setStyleSheet("QLineEdit { border: 1px solid red; border-radius: 2px; }");
+  }
+  if (ui->conf_file_plainTextEdit->text().trimmed().count() == 0) {
+    ui->conf_file_plainTextEdit->setStyleSheet("QLineEdit { border: 1px solid red; border-radius: 2px; }");
+  }
+  QStringList list=(QStringList()<<"png"<<"svg");
+  ui->comboBox->addItems(list);
+  ui->comboBox->setVisible(false);
+  enablectrl_runtime();
+  update_cmdfinal();
 }
 
 //close main window
@@ -732,7 +773,7 @@ void MainWindow::disablectrl_runtime()
       ui->mandatory_circosbindir_label->setEnabled(false);
       ui->mandatory_conffile_label->setEnabled(false);
       ui->mandatory_label->setEnabled(false);
-      ui->pushButton->setEnabled(true);
+      ui->stop_pushButton->setEnabled(true);
 }
 
 void MainWindow::enablectrl_runtime()
@@ -762,7 +803,7 @@ void MainWindow::enablectrl_runtime()
       ui->mandatory_circosbindir_label->setEnabled(true);
       ui->mandatory_conffile_label->setEnabled(true);
       ui->mandatory_label->setEnabled(true);
-      ui->pushButton->setEnabled(false);
+      ui->stop_pushButton->setEnabled(false);
 }
 
 void MainWindow::enablehelpmanversion()

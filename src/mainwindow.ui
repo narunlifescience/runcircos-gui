@@ -14,7 +14,7 @@
    <string>runCircos-gui v0.1</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../data/icons.qrc">
+   <iconset>
     <normaloff>:/runcircos-gui.png</normaloff>:/runcircos-gui.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -29,10 +29,6 @@
       </property>
       <property name="text">
        <string>Browse</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../data/icons.qrc">
-        <normaloff>:/icons/icons/open_file.png</normaloff>:/icons/icons/open_file.png</iconset>
       </property>
      </widget>
     </item>
@@ -140,10 +136,6 @@
          <property name="text">
           <string/>
          </property>
-         <property name="icon">
-          <iconset resource="../data/icons.qrc">
-           <normaloff>:/icons/icons/save.png</normaloff>:/icons/icons/save.png</iconset>
-         </property>
          <property name="iconSize">
           <size>
            <width>24</width>
@@ -153,13 +145,9 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="stop_pushButton">
          <property name="text">
           <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../data/icons.qrc">
-           <normaloff>:/icons/icons/stop.png</normaloff>:/icons/icons/stop.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -220,10 +208,6 @@
       <property name="text">
        <string> Run N-Circos</string>
       </property>
-      <property name="icon">
-       <iconset resource="../data/icons.qrc">
-        <normaloff>:/icons/icons/run.png</normaloff>:/icons/icons/run.png</iconset>
-      </property>
      </widget>
     </item>
     <item row="3" column="2" colspan="3">
@@ -249,10 +233,6 @@
       </property>
       <property name="text">
        <string>Browse</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../data/icons.qrc">
-        <normaloff>:/icons/icons/browse_folder.png</normaloff>:/icons/icons/browse_folder.png</iconset>
       </property>
      </widget>
     </item>
@@ -305,10 +285,6 @@
       </property>
       <property name="text">
        <string>Browse</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../data/icons.qrc">
-        <normaloff>:/icons/icons/browse_folder.png</normaloff>:/icons/icons/browse_folder.png</iconset>
       </property>
      </widget>
     </item>
@@ -759,7 +735,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/new.jpg</normaloff>:/icons/icons/new.jpg</iconset>
    </property>
    <property name="text">
@@ -795,7 +771,7 @@
   </action>
   <action name="actionOpen_settings">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/open_settings.png</normaloff>:/icons/icons/open_settings.png</iconset>
    </property>
    <property name="text">
@@ -804,7 +780,7 @@
   </action>
   <action name="actionSave_settings">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/Save_Settings.png</normaloff>:/icons/icons/Save_Settings.png</iconset>
    </property>
    <property name="text">
@@ -813,7 +789,7 @@
   </action>
   <action name="actionEdit_conf_file">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/configuration_edit.png</normaloff>:/icons/icons/configuration_edit.png</iconset>
    </property>
    <property name="text">
@@ -825,7 +801,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/edit.png</normaloff>:/icons/icons/edit.png</iconset>
    </property>
    <property name="text">
@@ -834,7 +810,7 @@
   </action>
   <action name="actionCheck_version">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/perl.png</normaloff>:/icons/icons/perl.png</iconset>
    </property>
    <property name="text">
@@ -843,7 +819,7 @@
   </action>
   <action name="actionInstall_perl_package">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/perl_package.png</normaloff>:/icons/icons/perl_package.png</iconset>
    </property>
    <property name="text">
@@ -852,7 +828,7 @@
   </action>
   <action name="actionCommand_line_CMD">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/cmd.png</normaloff>:/icons/icons/cmd.png</iconset>
    </property>
    <property name="text">
@@ -861,7 +837,7 @@
   </action>
   <action name="actionSet_circos_bin_directory">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/set_directory.png</normaloff>:/icons/icons/set_directory.png</iconset>
    </property>
    <property name="text">
@@ -873,7 +849,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/OnlineHelp.png</normaloff>:/icons/icons/OnlineHelp.png</iconset>
    </property>
    <property name="text">
@@ -882,7 +858,7 @@
   </action>
   <action name="actionQuick_referance_manuel_QRM">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/qrf.png</normaloff>:/icons/icons/qrf.png</iconset>
    </property>
    <property name="text">
@@ -891,7 +867,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/about.png</normaloff>:/icons/icons/about.png</iconset>
    </property>
    <property name="text">
@@ -900,7 +876,7 @@
   </action>
   <action name="actionClear_exec_status">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/Clear.png</normaloff>:/icons/icons/Clear.png</iconset>
    </property>
    <property name="text">
@@ -909,7 +885,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/quit.png</normaloff>:/icons/icons/quit.png</iconset>
    </property>
    <property name="text">
@@ -918,8 +894,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../data/icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

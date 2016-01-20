@@ -17,6 +17,9 @@
 
 #include "module_installer.h"
 #include "ui_module_installer.h"
+
+#include "icon_loader.h"
+
 #include <QProcess>
 #include <QFileDialog>
 #include <QDesktopServices>
@@ -31,6 +34,7 @@ module_installer::module_installer(QWidget *parent) :
     ui(new Ui::module_installer)
 {
     ui->setupUi(this);
+    setWindowIcon(icon_loader::load("package-install"));
 }
 
 module_installer::~module_installer()

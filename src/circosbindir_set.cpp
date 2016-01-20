@@ -18,6 +18,8 @@
 #include "circosbindir_set.h"
 #include "ui_circosbindir_set.h"
 
+#include "icon_loader.h"
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTextStream>
@@ -26,6 +28,10 @@ circosbindir_set::circosbindir_set(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::circosbindir_set) {
   ui->setupUi(this);
+
+  // Load icons
+  setWindowIcon(icon_loader::load("folder"));
+  ui->setcircosbindir_pushButton->setIcon(icon_loader::load("document-open-folder"));
   QFile inputFile(QDir::homePath() + "/.ncircos/circosbin.ncd");
   if (inputFile.open(QIODevice::ReadOnly)) {
     QTextStream in(&inputFile);

@@ -2,34 +2,29 @@
     <qresource prefix="/">
         <file>about_image.png</file>
         <file>splash.png</file>
-        <file>runcircos-gui2.png</file>
-        <file>runcircos-gui2.ico</file>
-        <file>runcircos-gui.png</file>
-        <file>runcircos-gui.ico</file>
-    </qresource>
-    <qresource prefix="/icons">
-        <file>icons/about.jpg</file>
-        <file>icons/about.png</file>
-        <file>icons/browse_folder.png</file>
-        <file>icons/Clear.png</file>
-        <file>icons/cmd.png</file>
-        <file>icons/configuration_edit.png</file>
-        <file>icons/copy.jpg</file>
-        <file>icons/Cut.png</file>
-        <file>icons/edit.png</file>
-        <file>icons/new.jpg</file>
-        <file>icons/OnlineHelp.png</file>
-        <file>icons/open_file.png</file>
-        <file>icons/open_settings.png</file>
-        <file>icons/paste.png</file>
-        <file>icons/perl_package.png</file>
-        <file>icons/perl.png</file>
-        <file>icons/qrf.png</file>
-        <file>icons/quit.png</file>
-        <file>icons/run.png</file>
-        <file>icons/Save_Settings.png</file>
-        <file>icons/save.png</file>
-        <file>icons/set_directory.png</file>
+        <file>icons/application-exit.png</file>
+        <file>icons/application-pdf.png</file>
+        <file>icons/application-x-shellscript.png</file>
+        <file>icons/configure.png</file>
+        <file>icons/document-edit.png</file>
+        <file>icons/document-new.png</file>
+        <file>icons/document-open.png</file>
+        <file>icons/document-open-folder.png</file>
+        <file>icons/document-save.png</file>
+        <file>icons/edit-clear.png</file>
+        <file>icons/edit-copy.png</file>
+        <file>icons/edit-cut.png</file>
+        <file>icons/edit-paste.png</file>
+        <file>icons/folder.png</file>
+        <file>icons/help-about.png</file>
+        <file>icons/help-contents.png</file>
+        <file>icons/media-playback-start.png</file>
+        <file>icons/package-install.png</file>
+        <file>icons/runcircos-gui2.png</file>
+        <file>icons/runcircos-gui2.ico</file>
+        <file>icons/runcircos-gui.png</file>
+        <file>icons/runcircos-gui.ico</file>
         <file>icons/stop.png</file>
+        <file>icons/terminal.png</file>
     </qresource>
 </RCC>
