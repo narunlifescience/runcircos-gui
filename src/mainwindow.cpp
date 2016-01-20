@@ -82,6 +82,8 @@ MainWindow::MainWindow(QWidget *parent)
       "application-pdf"));
   ui->actionAbout->setIcon(icon_loader::load("help-about"));
 
+  // Signal slot connections
+
   QRect desktopRect = QApplication::desktop()->availableGeometry(this);
   QPoint center = desktopRect.center();
   this->move((center.x() - (width()/2)), (center.y() - (height()/2)) );
