@@ -32,9 +32,8 @@ class circosbindir_set : public QDialog {
   ~circosbindir_set();
 
  private slots:
-  void on_setcircosbindir_pushButton_clicked();
-  void on_pushButton_clicked();
-  void on_cancel_pushButton_clicked();
+  void locate_circos_bin_directory();
+  void set_circos_bin_directory();
 
 
  private:

@@ -34,7 +34,13 @@ module_installer::module_installer(QWidget *parent) :
     ui(new Ui::module_installer)
 {
     ui->setupUi(this);
+
+    // Load icons
     setWindowIcon(icon_loader::load("package-install"));
+
+    // Signal slot connections
+    connect(ui->install_pushButton, SIGNAL(clicked()),
+            SLOT(install_perl_module()));
 }
 
 module_installer::~module_installer()
@@ -42,9 +48,8 @@ module_installer::~module_installer()
     delete ui;
 }
 
-void module_installer::on_install_pushButton_clicked()
+void module_installer::install_perl_module()
 {
-       //this->hide();
         if (ui->module_lineEdit->text().trimmed() != "GD")
         {
         QDir dir(QDir::homePath() + "/.ncircos");

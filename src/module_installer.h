@@ -34,7 +34,7 @@ public:
     ~module_installer();
 
 private slots:
-    void on_install_pushButton_clicked();
+    void install_perl_module();
     void chmodExit();
 
 private:

@@ -14,7 +14,7 @@
    <string>Set default circos/bin directory</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../data/icons.qrc">
+   <iconset>
     <normaloff>:/icons/icons/set_directory.png</normaloff>:/icons/icons/set_directory.png</iconset>
   </property>
   <widget class="QPushButton" name="setcircosbindir_pushButton">
@@ -30,11 +30,11 @@
     <string>Browse</string>
    </property>
    <property name="icon">
-    <iconset resource="../data/icons.qrc">
+    <iconset>
      <normaloff>:/icons/icons/browse_folder.png</normaloff>:/icons/icons/browse_folder.png</iconset>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="ok_pushButton">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -71,8 +71,6 @@
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="../data/icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

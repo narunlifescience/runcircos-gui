@@ -28,6 +28,9 @@ about_box::about_box(QWidget *parent)
   // Load icons
   setWindowIcon(icon_loader::load("help-about"));
 
+  // Signal slot connections
+  connect(ui->ok_pushButton, SIGNAL(clicked()), SLOT(close()));
+
   ui->plainTextEdit->setStyleSheet("QPlainTextEdit { background-color:"
                                    " transparent; }");
   ui->plainTextEdit->setReadOnly(true);
@@ -35,8 +38,4 @@ about_box::about_box(QWidget *parent)
 
 about_box::~about_box() {
   delete ui;
-}
-
-void about_box::on_ok_pushButton_clicked() {
-  close();
 }

@@ -31,7 +31,17 @@ circosbindir_set::circosbindir_set(QWidget *parent)
 
   // Load icons
   setWindowIcon(icon_loader::load("folder"));
-  ui->setcircosbindir_pushButton->setIcon(icon_loader::load("document-open-folder"));
+  ui->setcircosbindir_pushButton->setIcon(icon_loader::load(
+      "document-open-folder"));
+
+  // Signal slot connections
+  connect(ui->setcircosbindir_pushButton, SIGNAL(clicked()),
+          SLOT(locate_circos_bin_directory()));
+  connect(ui->ok_pushButton, SIGNAL(clicked()),
+          SLOT(set_circos_bin_directory()));
+  connect(ui->cancel_pushButton, SIGNAL(clicked()),
+          SLOT(close()));
+
   QFile inputFile(QDir::homePath() + "/.ncircos/circosbin.ncd");
   if (inputFile.open(QIODevice::ReadOnly)) {
     QTextStream in(&inputFile);
@@ -45,13 +55,13 @@ circosbindir_set::~circosbindir_set() {
   delete ui;
 }
 
-void circosbindir_set::on_setcircosbindir_pushButton_clicked() {
+void circosbindir_set::locate_circos_bin_directory() {
   QString set_circos_bindir = QFileDialog::getExistingDirectory(0,
       "Caption",QString(),QFileDialog::ShowDirsOnly);
   ui->setcircosbindir_plainTextEdit->setText(set_circos_bindir);
 }
 
-void circosbindir_set::on_pushButton_clicked() {
+void circosbindir_set::set_circos_bin_directory() {
   QDir dir(QDir::homePath() + "/.ncircos");
   if (!dir.exists()) {
     dir.mkpath(".");
@@ -65,8 +75,3 @@ void circosbindir_set::on_pushButton_clicked() {
   }
   close();
 }
-
-void circosbindir_set::on_cancel_pushButton_clicked() {
-  close();
-}
-

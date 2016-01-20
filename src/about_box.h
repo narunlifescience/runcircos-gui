@@ -32,9 +32,6 @@ class about_box : public QDialog
   explicit about_box(QWidget *parent = 0);
   ~about_box();
 
- private slots:
-  void on_ok_pushButton_clicked();
-
  private:
   Ui::about_box *ui;
 };
