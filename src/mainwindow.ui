@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>runCircos-gui v0.1</string>
   </property>
-  <property name="windowIcon">
-   <iconset>
-    <normaloff>:/runcircos-gui.png</normaloff>:/runcircos-gui.png</iconset>
-  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="3" column="5">
@@ -734,64 +730,36 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/new.jpg</normaloff>:/icons/icons/new.jpg</iconset>
-   </property>
    <property name="text">
     <string>New</string>
    </property>
   </action>
   <action name="actionCut">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/other_icons/other_icons/Cut.png</normaloff>:/other_icons/other_icons/Cut.png</iconset>
-   </property>
    <property name="text">
     <string>Cut</string>
    </property>
   </action>
   <action name="actionCopy">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/other_icons/other_icons/copy.jpg</normaloff>:/other_icons/other_icons/copy.jpg</iconset>
-   </property>
    <property name="text">
     <string>Copy</string>
    </property>
   </action>
   <action name="actionPaste">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/other_icons/other_icons/paste.png</normaloff>:/other_icons/other_icons/paste.png</iconset>
-   </property>
    <property name="text">
     <string>Paste</string>
    </property>
   </action>
   <action name="actionOpen_settings">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/open_settings.png</normaloff>:/icons/icons/open_settings.png</iconset>
-   </property>
    <property name="text">
     <string>Open settings</string>
    </property>
   </action>
   <action name="actionSave_settings">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/Save_Settings.png</normaloff>:/icons/icons/Save_Settings.png</iconset>
-   </property>
    <property name="text">
     <string>Save settings</string>
    </property>
   </action>
   <action name="actionEdit_conf_file">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/configuration_edit.png</normaloff>:/icons/icons/configuration_edit.png</iconset>
-   </property>
    <property name="text">
     <string>Edit .conf file</string>
    </property>
@@ -800,46 +768,26 @@
    <property name="checkable">
     <bool>false</bool>
    </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/edit.png</normaloff>:/icons/icons/edit.png</iconset>
-   </property>
    <property name="text">
     <string>Edit other files</string>
    </property>
   </action>
   <action name="actionCheck_version">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/perl.png</normaloff>:/icons/icons/perl.png</iconset>
-   </property>
    <property name="text">
     <string>Check perl</string>
    </property>
   </action>
   <action name="actionInstall_perl_package">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/perl_package.png</normaloff>:/icons/icons/perl_package.png</iconset>
-   </property>
    <property name="text">
     <string>Install perl package</string>
    </property>
   </action>
   <action name="actionCommand_line_CMD">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/cmd.png</normaloff>:/icons/icons/cmd.png</iconset>
-   </property>
    <property name="text">
     <string>Check perl module installation status</string>
    </property>
   </action>
   <action name="actionSet_circos_bin_directory">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/set_directory.png</normaloff>:/icons/icons/set_directory.png</iconset>
-   </property>
    <property name="text">
     <string>Set circos/bin directory</string>
    </property>
@@ -848,46 +796,26 @@
    <property name="checkable">
     <bool>false</bool>
    </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/OnlineHelp.png</normaloff>:/icons/icons/OnlineHelp.png</iconset>
-   </property>
    <property name="text">
     <string>Online documentation</string>
    </property>
   </action>
   <action name="actionQuick_referance_manuel_QRM">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/qrf.png</normaloff>:/icons/icons/qrf.png</iconset>
-   </property>
    <property name="text">
     <string>Quick referance manuel (QRM)</string>
    </property>
   </action>
   <action name="actionAbout">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/about.png</normaloff>:/icons/icons/about.png</iconset>
-   </property>
    <property name="text">
     <string>About</string>
    </property>
   </action>
   <action name="actionClear_exec_status">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/Clear.png</normaloff>:/icons/icons/Clear.png</iconset>
-   </property>
    <property name="text">
     <string>Clear exec status</string>
    </property>
   </action>
   <action name="actionQuit">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/icons/quit.png</normaloff>:/icons/icons/quit.png</iconset>
-   </property>
    <property name="text">
     <string>Quit</string>
    </property>

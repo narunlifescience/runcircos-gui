@@ -35,6 +35,7 @@ QIcon icon_loader::load(const QString &name) {
 
   // Otherwise use our fallback theme
   const QString filename(":/icons/" + name + ".png");
+  // TODO: add different size icons 16x16, 22x22 etc..
 
   if (QFile::exists(filename))
     ret.addFile(filename);

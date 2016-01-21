@@ -25,6 +25,12 @@
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
+  // Set application parameters
+  a.setApplicationName("runcircos-gui");
+  a.setApplicationVersion("0.1");
+  a.setOrganizationName("My Company");
+  a.setOrganizationDomain("website");
+
   // Show splashscreen
   QPixmap pixmap (":/splash.png");
   QSplashScreen *splash = new QSplashScreen(pixmap);

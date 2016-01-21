@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>Set default circos/bin directory</string>
   </property>
-  <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icons/icons/set_directory.png</normaloff>:/icons/icons/set_directory.png</iconset>
-  </property>
   <widget class="QPushButton" name="setcircosbindir_pushButton">
    <property name="geometry">
     <rect>

@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>CPAN module installer</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="../data/icons.qrc">
-    <normaloff>:/icons/perl_package.png</normaloff>:/icons/perl_package.png</iconset>
-  </property>
   <widget class="QLineEdit" name="module_lineEdit">
    <property name="geometry">
     <rect>
