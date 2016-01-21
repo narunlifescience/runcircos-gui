@@ -35,11 +35,13 @@ public:
 
 private slots:
     void install_perl_module();
-    void chmodExit();
+    void start_install_module_process();
 
 private:
     Ui::module_installer *ui;
     QProcess *modinstall;
+
+    void show_blank_module_name_msgbox();
 };
 
 #endif // MODULE_INSTALLER_H

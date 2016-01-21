@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
   
   MainWindow w;
 
-  // Close splashscreen after 3 sec & show mainwindow
-  QTimer::singleShot(3000, splash, SLOT(close()));
+  // Close splashscreen after 2 sec & show mainwindow
+  QTimer::singleShot(2000, splash, SLOT(close()));
   QTimer::singleShot(3000, &w, SLOT(show()));
   
   return a.exec();
