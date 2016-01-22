@@ -21,7 +21,7 @@
 #include "circosbindir_set.h"
 #include "module_installer.h"
 #include "icon_loader.h"
-uggigiui
+
 #include <QProcess>
 #include <QFileDialog>
 #include <QDesktopServices>
