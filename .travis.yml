@@ -1,0 +1,10 @@
+dist: trusty
+language: cpp
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libqt4-dev qt4-qmake
+
+script: 
+  - cd src
+  - qmake
+  - make
