@@ -15,29 +15,31 @@
    along with runcircos-gui.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CIRCOSBINDIR_SET_H
-#define CIRCOSBINDIR_SET_H
+#ifndef SETBINDIR_H
+#define SETBINDIR_H
 
 #include <QDialog>
 
 namespace Ui {
-  class circosbindir_set;
+  class SetBinDir;
 }
 
-class circosbindir_set : public QDialog {
+class SetBinDir : public QDialog {
   Q_OBJECT
 
  public:
-  explicit circosbindir_set(QWidget *parent = 0);
-  ~circosbindir_set();
+  explicit SetBinDir(QWidget *parent = 0);
+  ~SetBinDir();
 
  private slots:
-  void locate_circos_bin_directory();
-  void set_circos_bin_directory();
-
+  void browseBinDir();
+  void setBinDir();
 
  private:
-  Ui::circosbindir_set *ui;
+  void loadBinDirSettings();
+
+  Ui::SetBinDir *ui;
+  QString settingsfile;
 };
 
-#endif // CIRCOSBINDIR_SET_H
+#endif // SETBINDIR_H

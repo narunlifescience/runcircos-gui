@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>circosbindir_set</class>
- <widget class="QDialog" name="circosbindir_set">
+ <class>SetBinDir</class>
+ <widget class="QDialog" name="SetBinDir">
   <property name="geometry">
    <rect>
     <x>0</x>

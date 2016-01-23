@@ -15,18 +15,18 @@
    along with runcircos-gui.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "circosbindir_set.h"
-#include "ui_circosbindir_set.h"
+#include "setbindir.h"
+#include "ui_setbindir.h"
 
 #include "iconloader.h"
+#include "utils.h"
 
 #include <QFileDialog>
-#include <QMessageBox>
-#include <QTextStream>
+#include <QSettings>
 
-circosbindir_set::circosbindir_set(QWidget *parent)
+SetBinDir::SetBinDir(QWidget *parent)
     : QDialog(parent),
-      ui(new Ui::circosbindir_set) {
+      ui(new Ui::SetBinDir) {
   ui->setupUi(this);
 
   // Load icons
@@ -36,42 +36,36 @@ circosbindir_set::circosbindir_set(QWidget *parent)
 
   // Signal slot connections
   connect(ui->setcircosbindir_pushButton, SIGNAL(clicked()),
-          SLOT(locate_circos_bin_directory()));
+          SLOT(browseBinDir()));
   connect(ui->ok_pushButton, SIGNAL(clicked()),
-          SLOT(set_circos_bin_directory()));
+          SLOT(setBinDir()));
   connect(ui->cancel_pushButton, SIGNAL(clicked()),
           SLOT(close()));
 
-  QFile inputFile(QDir::homePath() + "/.ncircos/circosbin.ncd");
-  if (inputFile.open(QIODevice::ReadOnly)) {
-    QTextStream in(&inputFile);
-    QString line = in.readLine();
-    ui->setcircosbindir_plainTextEdit->setText(line.trimmed());
-    inputFile.close();
-  }
+  // Load settings
+  settingsfile = Utils::getConfigPath(Utils::ConfFile);
+  loadBinDirSettings();
 }
 
-circosbindir_set::~circosbindir_set() {
+SetBinDir::~SetBinDir() {
   delete ui;
 }
 
-void circosbindir_set::locate_circos_bin_directory() {
+void SetBinDir::browseBinDir() {
   QString set_circos_bindir = QFileDialog::getExistingDirectory(0,
       "Caption",QString(),QFileDialog::ShowDirsOnly);
   ui->setcircosbindir_plainTextEdit->setText(set_circos_bindir);
 }
 
-void circosbindir_set::set_circos_bin_directory() {
-  QDir dir(QDir::homePath() + "/.ncircos");
-  if (!dir.exists()) {
-    dir.mkpath(".");
-  }
-  QString filename = QDir::homePath() + "/.ncircos/circosbin.ncd";
-  QFile file( filename );
-  if ( file.open(QIODevice::ReadWrite| QIODevice::Truncate
-                 | QIODevice::Text) ) {
-    QTextStream stream( &file );
-    stream << ui->setcircosbindir_plainTextEdit->text().trimmed();
-  }
+void SetBinDir::setBinDir() {
+  QSettings settings(settingsfile, QSettings::NativeFormat);
+  settings.setValue("CircosBinDirectory",
+      ui->setcircosbindir_plainTextEdit->text().trimmed());
   close();
+}
+
+void SetBinDir::loadBinDirSettings() {
+  QSettings settings(settingsfile, QSettings::NativeFormat);
+  QString bindir = settings.value("CircosBinDirectory", "").toString();
+  ui->setcircosbindir_plainTextEdit->setText(bindir);
 }

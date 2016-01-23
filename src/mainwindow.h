@@ -113,7 +113,7 @@ class MainWindow : public QMainWindow {
 
     void on_actionClear_exec_status_triggered();
 
-    void on_actionSet_circos_bin_directory_triggered();
+
 
     void updateExit();
 
@@ -160,6 +160,9 @@ class MainWindow : public QMainWindow {
   void stopExecution();
   void installPerlModule();
   void exit();
+
+  // Set Circos bin directory
+  void setBinDir();
 
   // Help & about
   void onlineDocumentation();

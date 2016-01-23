@@ -19,7 +19,7 @@
 #include "ui_mainwindow.h"
 
 #include "aboutbox.h"
-#include "circosbindir_set.h"
+#include "setbindir.h"
 #include "iconloader.h"
 #include "module_installer.h"
 
@@ -89,6 +89,8 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(installPerlModule()));
   connect(ui->actionQuit, SIGNAL(triggered()),
           SLOT(exit()));
+  connect(ui->actionSet_circos_bin_directory, SIGNAL(triggered()),
+          SLOT(setBinDir()));
   connect(ui->actionOnline_documentation, SIGNAL(triggered()),
           SLOT(onlineDocumentation()));
   connect(ui->actionQuick_referance_manuel_QRM, SIGNAL(triggered()),
@@ -673,14 +675,6 @@ void MainWindow::on_actionClear_exec_status_triggered()
     ui->exec_status_err_textEdit->setPlainText("");
 }
 
-void MainWindow::on_actionSet_circos_bin_directory_triggered()
-{
-    circosbindir_set st;
-    st.setModal(true);
-    st.exec();
-}
-
-
 void MainWindow::on_Save_stdout_pushButton_clicked()
 {
     QString output_fileName = QFileDialog::getSaveFileName(this, "Save file", "", "text files(*.txt)");
@@ -1125,6 +1119,12 @@ void MainWindow::installPerlModule() {
 
 void MainWindow::exit() {
   close();
+}
+
+void MainWindow::setBinDir() {
+    SetBinDir setbindir;
+    setbindir.setModal(true);
+    setbindir.exec();
 }
 
 void MainWindow::onlineDocumentation() {
