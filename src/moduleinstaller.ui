@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>module_installer</class>
- <widget class="QDialog" name="module_installer">
+ <class>ModuleInstaller</class>
+ <widget class="QDialog" name="ModuleInstaller">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -50,8 +50,6 @@
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="../data/icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

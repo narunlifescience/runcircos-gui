@@ -24,8 +24,11 @@
 class Utils {
 public:
   enum Path {
-      ConfFile,
-      Manual
+    ConfFile,
+    ConfDir,
+    Manuel,
+    WhichPerl,
+    InstallModule
   };
 
   static QString getConfigPath(const Path& path);

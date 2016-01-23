@@ -15,10 +15,11 @@
    along with runcircos-gui.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "module_installer.h"
-#include "ui_module_installer.h"
+#include "moduleinstaller.h"
+#include "ui_moduleinstaller.h"
 
 #include "iconloader.h"
+#include "utils.h"
 
 #include <QFileDialog>
 #include <QFileInfo>
@@ -26,9 +27,9 @@
 #include <QProcess>
 #include <QTextStream>
 
-module_installer::module_installer(QWidget *parent)
+ModuleInstaller::ModuleInstaller(QWidget *parent)
     : QDialog(parent),
-      ui(new Ui::module_installer) {
+      ui(new Ui::ModuleInstaller) {
   ui->setupUi(this);
 
   // Load icons
@@ -36,14 +37,14 @@ module_installer::module_installer(QWidget *parent)
 
   // Signal slot connections
   connect(ui->install_pushButton, SIGNAL(clicked()),
-      SLOT(install_perl_module()));
+      SLOT(installPerlModule()));
 }
 
-module_installer::~module_installer() {
+ModuleInstaller::~ModuleInstaller() {
   delete ui;
 }
 
-void module_installer::install_perl_module() {
+void ModuleInstaller::installPerlModule() {
 #ifdef Q_OS_WIN
   if (ui->module_lineEdit->text().trimmed().count() != 0) {
 #else
@@ -54,14 +55,13 @@ void module_installer::install_perl_module() {
   if (ui->module_lineEdit->text().trimmed() != "GD" &&
       ui->module_lineEdit->text().trimmed().count() != 0) {
 
-    QDir dir(QDir::homePath() + "/.runcircos-gui");
+    QDir dir(Utils::getConfigPath(Utils::ConfDir));
     if (!dir.exists()) {
       dir.mkpath(".");
     }
 
     // Create a perl module installer bash script file.
-    const QString filename = QDir::homePath() +
-        "/.runcircos-gui/installmodule.sh";
+    const QString filename = Utils::getConfigPath(Utils::InstallModule);
     QFile file(filename);
     QStringList bash_script;
     bash_script << "#!/bin/bash"
@@ -94,12 +94,12 @@ void module_installer::install_perl_module() {
     // mode of bash script & then run the script.
     modinstall  = new QProcess(this);
     connect(modinstall, SIGNAL(finished(int)), this,
-            SLOT(start_install_module_process()));
+            SLOT(startInstallModuleProcess()));
     modinstall->start("bash -c \"chmod a+x "+ filename + "\"");
 #endif
   } else {
     if (ui->module_lineEdit->text().trimmed().count() == 0) {
-      show_blank_module_name_msgbox();
+      blankModuleNameMsgbox();
     } else if (ui->module_lineEdit->text().trimmed() == "GD") {
       // Q_OS_WIN will never reach this if statement.
 #ifdef Q_OS_UNIX
@@ -115,18 +115,17 @@ void module_installer::install_perl_module() {
       msgbox.exec();
 #elif defined(Q_OS_DARWIN)
       // Generate a custom script to install GD.
-      QDir dir(QDir::homePath() + "/.runcircos-gui");
+      QDir dir(Utils::getConfigPath(Utils::ConfDir));
       if (!dir.exists()) {
         dir.mkpath(".");
       }
-      const QString filename = QDir::homePath() +
-                               "/.runcircos-gui/installmodule.sh";
+      const QString filename = Utils::getConfigPath(Utils::InstallModule);
       QFile file(filename);
       QStringList bash_script;
       bash_script
           << "#!/bin/sh"
           << "echo \"Installing GD module by custom method ....\"";
-          << "cd " + QDir::homePath() + "/.runcircos-gui";
+          << "cd " + Utils::getConfigPath(Utils::ConfDir);
           << "curl -O http://www.researcharun.com/narayanankutty/gd.tar.gz";
           << "tar -zxf gd.tar.gz";
           << "cd gd";
@@ -174,31 +173,31 @@ void module_installer::install_perl_module() {
 
       modinstall  = new QProcess(this);
       connect(modinstall, SIGNAL(finished(int)), this,
-              SLOT(start_install_module_process()));
+              SLOT(startInstallModuleProcess()));
       modinstall->start("bash -c \"chmod a+x "+ filename + "\"");
 #endif
     }
   }
 }
 
-void module_installer::start_install_module_process() {
+void ModuleInstaller::startInstallModuleProcess() {
   // Start the terminal as detached process
   modinstall = new QProcess(this);
 #ifdef Q_OS_UNIX
   // TODO: use the default terminal available
-  modinstall->startDetached("bash -c \"xterm " + QDir::homePath() +
-                            "/.runcircos-gui/installmodule.sh\"");
+  modinstall->startDetached("bash -c \"xterm " +
+      Utils::getConfigPath(Utils::InstallModule) + "\"");
 #elif defined(Q_OS_DARWIN)
-  modinstall->startDetached("open -a Terminal " + QDir::homePath() +
-                            "/.runcircos-gui/installmodule.sh");
+  modinstall->startDetached("open -a Terminal " +
+      Utils::getConfigPath(Utils::InstallModule));
 #elif defined(Q_OS_WIN)
   modinstall->startDetached("cmd.exe /K cpan " +
-                            ui->module_lineEdit->text().trimmed());
+      ui->module_lineEdit->text().trimmed());
 #endif
   this->close();
 }
 
-void module_installer::show_blank_module_name_msgbox() {
+void ModuleInstaller::blankModuleNameMsgbox() {
   QMessageBox msgbox;
   msgbox.setWindowTitle(tr("Blank module name!"));
   msgbox.setText("Please give a perl module name!");

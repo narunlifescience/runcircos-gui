@@ -15,33 +15,32 @@
    along with runcircos-gui.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODULE_INSTALLER_H
-#define MODULE_INSTALLER_H
+#ifndef MODULEINSTALLER_H
+#define MODULEINSTALLER_H
 
 #include <QDialog>
 #include <QProcess>
 
 namespace Ui {
-class module_installer;
+  class ModuleInstaller;
 }
 
-class module_installer : public QDialog
-{
-    Q_OBJECT
+class ModuleInstaller : public QDialog {
+  Q_OBJECT
 
-public:
-    explicit module_installer(QWidget *parent = 0);
-    ~module_installer();
+ public:
+  explicit ModuleInstaller(QWidget *parent = 0);
+  ~ModuleInstaller();
 
-private slots:
-    void install_perl_module();
-    void start_install_module_process();
+ private slots:
+  void installPerlModule();
+  void startInstallModuleProcess();
 
-private:
-    Ui::module_installer *ui;
-    QProcess *modinstall;
+ private:
+  void blankModuleNameMsgbox();
 
-    void show_blank_module_name_msgbox();
+  Ui::ModuleInstaller *ui;
+  QProcess *modinstall;
 };
 
-#endif // MODULE_INSTALLER_H
+#endif // MODULEINSTALLER_H

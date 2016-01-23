@@ -21,7 +21,7 @@
 #include "aboutbox.h"
 #include "setbindir.h"
 #include "iconloader.h"
-#include "module_installer.h"
+#include "moduleinstaller.h"
 #include "utils.h"
 
 #include <QAction>
@@ -89,7 +89,9 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionInstall_perl_package, SIGNAL(triggered()),
           SLOT(installPerlModule()));
   connect(ui->actionQuit, SIGNAL(triggered()),
-          SLOT(exit()));
+          SLOT(quit()));
+  connect(ui->actionCheck_version, SIGNAL(triggered()),
+          SLOT(checkPerlDir()));
   connect(ui->actionSet_circos_bin_directory, SIGNAL(triggered()),
           SLOT(setBinDir()));
   connect(ui->actionOnline_documentation, SIGNAL(triggered()),
@@ -136,7 +138,7 @@ MainWindow::MainWindow(QWidget *parent)
   QStringList list=(QStringList()<<"png"<<"svg");
   ui->comboBox->addItems(list);
   ui->comboBox->setVisible(false);
-  enablectrl_runtime();
+  enableUiControls();
   update_cmdfinal();
 }
 
@@ -154,42 +156,30 @@ void MainWindow::on_run_ncircos_button_clicked()
     del = delete_existingfiles ();
     if (del == 1 || del == 2)
     {
-    disablectrl_runtime();
+    disableUiControls();
     ui->progressBar->setMaximum(0);
     ui->exec_status_plainTextEdit->setPlainText("");
     ui->exec_status_err_textEdit->setPlainText("");
     extopargs = ui->ext_op_args_plainTextEdit->text();
     process  = new QProcess(this);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateText()));
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(updateErr()));
+    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(standardOutput()));
+    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(standardError()));
     connect(process, SIGNAL(finished(int)), this, SLOT(updateExit()));
     cmdfinal = ui->cmdfinal_textEdit->toPlainText().trimmed();
     process->start("bash -c \""+ cmdfinal + "\"");
     }
 }
 
-void MainWindow::updateText()
-{
-    QString appendText(process->readAllStandardOutput());
-    ui->exec_status_plainTextEdit->appendPlainText(appendText);
-}
-
 void MainWindow::updateExit()
 {
     ui->progressBar->setMaximum(100);
     ui->progressBar->setValue(100);
-    enablectrl_runtime();
+    enableUiControls();
     if(ui->t_version_radioButton->isChecked() || ui->t_help_radioButton->isChecked() || ui->t_man_radioButton->isChecked()) {disablehelpmanversion();}
     if (image_show_status == true && !ui->t_help_radioButton->isChecked() && !ui->t_version_radioButton->isChecked() && !ui->t_man_radioButton->isChecked() && !ui->t_cdump_radioButton->isChecked())
     {
         if(!ui->exec_status_err_textEdit->toPlainText().contains("*****!!! PROCESS ABORTED BY USER !!!*****")) { viewimage (); }
     }
-}
-
-void MainWindow::updateErr()
-{
-    QString appendErr(process->readAllStandardError());
-    ui->exec_status_err_textEdit->appendPlainText(appendErr);
 }
 
 // setting up circos/bin directory
@@ -617,36 +607,6 @@ void MainWindow::on_ext_op_args_plainTextEdit_textChanged()
     update_cmdfinal();
 }
 
-void MainWindow::on_actionCheck_version_triggered()
-{
-    ui->exec_status_plainTextEdit->setPlainText("");
-    ui->exec_status_err_textEdit->setPlainText("");
-    process  = new QProcess(this);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateText()));
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(updateErr()));
-    connect(process, SIGNAL(finished(int)), this, SLOT(updateExitperlcheck()));
-    QString perlw = "which perl";
-    process->start("bash -c \""+ perlw + "\"");
-    ui->exec_status_plainTextEdit->appendPlainText("><><><><><><><><>< PERL BIN DIRECTORY (which perl) ><><><><><><><><><");
-}
-void MainWindow::updateExitperlcheck()
-{
-    process  = new QProcess(this);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateText()));
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(updateErr()));
-    connect(process, SIGNAL(finished(int)), this, SLOT(updateExitperlcheckcomplete()));
-    QString perlv = "perl -v";
-    process->start("bash -c \""+ perlv + "\"");
-    ui->exec_status_plainTextEdit->appendPlainText("><><><><><><><><>< PERL VERSION (perl -v) ><><><><><><><><><");
-}
-
-void MainWindow::updateExitperlcheckcomplete()
-{
-    ui->progressBar->setMaximum(100);
-    ui->progressBar->setValue(100);
-    enablectrl_runtime();
-}
-
 void MainWindow::on_actionNew_triggered()
 {
     on_nt_default_radioButton_clicked();
@@ -728,66 +688,6 @@ void MainWindow::viewimage()
     if (ofile.trimmed() == "") { ofile = "circos";}
     QFile imagefile(odir + "/" + ofile + "." + ext);
     if(!imagefile.exists()) { QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath() + "/ncirco_no_image.png")); } else { QDesktopServices::openUrl(QUrl(odir + "/" + ofile + "." + ext)); }
-}
-
-void MainWindow::disablectrl_runtime()
-{
-    ui->toggle_groupBox->setEnabled(false);
-     ui->ntoggle_groupBox->setEnabled(false);
-      ui->ext_op_args_groupBox->setEnabled(false);
-      ui->circos_bindir_plainTextEdit->setEnabled(false);
-      ui->circos_bindir_pushButton->setEnabled(false);
-      ui->conf_file_plainTextEdit->setEnabled(false);
-      ui->conf_file_pushButton->setEnabled(false);
-      ui->out_folder_plainTextEdit->setEnabled(false);
-      ui->out_folder_pushButton->setEnabled(false);
-      ui->out_file_plainTextEdit->setEnabled(false);
-      ui->edit_cmdline_checkBox->setEnabled(false);
-      ui->cmdfinal_textEdit->setEnabled(false);
-      ui->run_ncircos_button->setEnabled(false);
-      ui->Save_stdout_pushButton->setEnabled(false);
-      ui->menuBar->setEnabled(false);
-      ui->comboBox->setEnabled(false);
-      ui->imageciew_checkBox->setEnabled(false);
-      ui->circos_bindir_label->setEnabled(false);
-      ui->conf_file_label->setEnabled(false);
-      ui->out_folder_label->setEnabled(false);
-      ui->out_file_label->setEnabled(false);
-      ui->cmdline_label->setEnabled(false);
-      ui->mandatory_circosbindir_label->setEnabled(false);
-      ui->mandatory_conffile_label->setEnabled(false);
-      ui->mandatory_label->setEnabled(false);
-      ui->stop_pushButton->setEnabled(true);
-}
-
-void MainWindow::enablectrl_runtime()
-{
-    ui->toggle_groupBox->setEnabled(true);
-     ui->ntoggle_groupBox->setEnabled(true);
-      ui->ext_op_args_groupBox->setEnabled(true);
-      ui->circos_bindir_plainTextEdit->setEnabled(true);
-      ui->circos_bindir_pushButton->setEnabled(true);
-      ui->conf_file_plainTextEdit->setEnabled(true);
-      ui->conf_file_pushButton->setEnabled(true);
-      ui->out_folder_plainTextEdit->setEnabled(true);
-      ui->out_folder_pushButton->setEnabled(true);
-      ui->out_file_plainTextEdit->setEnabled(true);
-      ui->edit_cmdline_checkBox->setEnabled(true);
-      ui->cmdfinal_textEdit->setEnabled(true);
-      ui->run_ncircos_button->setEnabled(true);
-      ui->Save_stdout_pushButton->setEnabled(true);
-      ui->menuBar->setEnabled(true);
-      ui->comboBox->setEnabled(true);
-      ui->imageciew_checkBox->setEnabled(true);
-      ui->circos_bindir_label->setEnabled(true);
-      ui->conf_file_label->setEnabled(true);
-      ui->out_folder_label->setEnabled(true);
-      ui->out_file_label->setEnabled(true);
-      ui->cmdline_label->setEnabled(true);
-      ui->mandatory_circosbindir_label->setEnabled(true);
-      ui->mandatory_conffile_label->setEnabled(true);
-      ui->mandatory_label->setEnabled(true);
-      ui->stop_pushButton->setEnabled(false);
 }
 
 void MainWindow::enablehelpmanversion()
@@ -1050,7 +950,7 @@ void MainWindow::on_actionCommand_line_CMD_triggered()
 {
     ui->exec_status_plainTextEdit->setPlainText("");
     ui->exec_status_err_textEdit->setPlainText("");
-    disablectrl_runtime();
+    disableUiControls();
     ui->progressBar->setMaximum(0);
     QStringList circosdir = circosbindir.split("/");
     QString circosdirfinal;
@@ -1077,8 +977,8 @@ void MainWindow::on_actionCommand_line_CMD_triggered()
     }
     ui->exec_status_plainTextEdit->appendPlainText("making the bash script executable \"chmod a+x " + QDir::homePath() + "/.ncircos/testmobule_bashscript.sh\" ....");
     process  = new QProcess(this);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateText()));
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(updateErr()));
+    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(standardOutput()));
+    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(standardError()));
     connect(process, SIGNAL(finished(int)), this, SLOT(chmodExit()));
     process->start("bash -c \"chmod a+x "+ filename + "\"");
 }
@@ -1088,15 +988,15 @@ void MainWindow::chmodExit()
     ui->exec_status_plainTextEdit->appendPlainText("bash script chmod successfull ....");
     ui->exec_status_plainTextEdit->appendPlainText("Executing the bash script ....");
     process  = new QProcess(this);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateText()));
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(updateErr()));
+    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(standardOutput()));
+    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(standardError()));
     connect(process, SIGNAL(finished(int)), this, SLOT(modulecheckbashscriptExit()));
     process->start(QDir::homePath() + "/.ncircos/testmobule_bashscript.sh");
 }
 
 void MainWindow::modulecheckbashscriptExit()
 {
-    enablectrl_runtime();
+    enableUiControls();
     ui->progressBar->setMaximum(100);
     ui->progressBar->setValue(100);
     if(ui->exec_status_plainTextEdit->toPlainText().contains("fail") || ui->exec_status_err_textEdit->toPlainText().trimmed().count() != 0)
@@ -1112,15 +1012,66 @@ void MainWindow::stopExecution() {
   }
 }
 
-void MainWindow::installPerlModule() {
-  module_installer mod_installer;
-  mod_installer.setModal(true);
-  mod_installer.exec();
-}
+// ><><><><><><><><>< Runcircos-gui actions ><><><><><><><><><
 
-void MainWindow::exit() {
+void MainWindow::quit() {
   close();
 }
+
+// ><><><><><><><><>< Perl actions ><><><><><><><><><
+
+void MainWindow::checkPerlDir() {
+  clearOutput();
+  disableUiControls();
+  ui->progressBar->setMaximum(0);
+  process  = new QProcess(this);
+  connect(process, SIGNAL(readyReadStandardOutput()),
+          this, SLOT(standardOutput()));
+  connect(process, SIGNAL(readyReadStandardError()),
+          this, SLOT(standardError()));
+  connect(process, SIGNAL(finished(int)), this,
+          SLOT(checkPerlVersion()));
+#ifdef Q_OS_WIN
+  process->start("cmd.exe /c perl -e \"print $^X\"");
+  ui->exec_status_plainTextEdit->appendPlainText("><><><><><><><><>< "
+      "PERL BIN DIRECTORY (perl -e print $^X) ><><><><><><><><><");
+#else
+  process->start("bash -c \"which perl\"");
+  ui->exec_status_plainTextEdit->appendPlainText("><><><><><><><><>< "
+      "PERL BIN DIRECTORY (which perl) ><><><><><><><><><");
+#endif
+}
+
+void MainWindow::checkPerlVersion() {
+  process  = new QProcess(this);
+  connect(process, SIGNAL(readyReadStandardOutput()), this,
+          SLOT(standardOutput()));
+  connect(process, SIGNAL(readyReadStandardError()), this,
+          SLOT(standardError()));
+  connect(process, SIGNAL(finished(int)), this,
+          SLOT(checkPerlComplete()));
+#ifdef Q_OS_WIN
+  process->start("cmd.exe /c \"perl -v\"");
+#else
+  process->start("bash -c \"perl -v\"");
+#endif
+  ui->exec_status_plainTextEdit->appendPlainText("><><><><><><><><>< "
+      "PERL VERSION (perl -v) ><><><><><><><><><");
+}
+
+void MainWindow::checkPerlComplete() {
+  ui->progressBar->setMaximum(100);
+  ui->progressBar->setValue(100);
+  enableUiControls();
+}
+
+void MainWindow::installPerlModule() {
+  ModuleInstaller moduleinstaller;
+  moduleinstaller.setModal(true);
+  moduleinstaller.exec();
+}
+
+// ><><><><><><><><>< Set Circos bin directory ><><><><><><><><><
 
 void MainWindow::setBinDir() {
     SetBinDir setbindir;
@@ -1128,17 +1079,95 @@ void MainWindow::setBinDir() {
     setbindir.exec();
 }
 
+// ><><><><><><><><>< Help & about ><><><><><><><><><
+
 void MainWindow::onlineDocumentation() {
   QDesktopServices::openUrl(QUrl("http://www.researcharun.com/"
                                  "ncircos_documentation_linux.html"));
 }
 
 void MainWindow::quickReferanceManuel() {
-  QDesktopServices::openUrl(QUrl(Utils::getConfigPath(Utils::Manual)));
+  QDesktopServices::openUrl(QUrl(Utils::getConfigPath(
+                                 Utils::Manuel)));
 }
 
 void MainWindow::about() {
   AboutBox about;
   about.setModal(true);
   about.exec();
+}
+
+// ><><><><><><><><>< Supporting functions ><><><><><><><><><
+
+void MainWindow::clearOutput() {
+  ui->exec_status_plainTextEdit->setPlainText("");
+  ui->exec_status_err_textEdit->setPlainText("");
+}
+
+void MainWindow::disableUiControls() {
+  ui->toggle_groupBox->setEnabled(false);
+  ui->ntoggle_groupBox->setEnabled(false);
+  ui->ext_op_args_groupBox->setEnabled(false);
+  ui->circos_bindir_plainTextEdit->setEnabled(false);
+  ui->circos_bindir_pushButton->setEnabled(false);
+  ui->conf_file_plainTextEdit->setEnabled(false);
+  ui->conf_file_pushButton->setEnabled(false);
+  ui->out_folder_plainTextEdit->setEnabled(false);
+  ui->out_folder_pushButton->setEnabled(false);
+  ui->out_file_plainTextEdit->setEnabled(false);
+  ui->edit_cmdline_checkBox->setEnabled(false);
+  ui->cmdfinal_textEdit->setEnabled(false);
+  ui->run_ncircos_button->setEnabled(false);
+  ui->Save_stdout_pushButton->setEnabled(false);
+  ui->menuBar->setEnabled(false);
+  ui->comboBox->setEnabled(false);
+  ui->imageciew_checkBox->setEnabled(false);
+  ui->circos_bindir_label->setEnabled(false);
+  ui->conf_file_label->setEnabled(false);
+  ui->out_folder_label->setEnabled(false);
+  ui->out_file_label->setEnabled(false);
+  ui->cmdline_label->setEnabled(false);
+  ui->mandatory_circosbindir_label->setEnabled(false);
+  ui->mandatory_conffile_label->setEnabled(false);
+  ui->mandatory_label->setEnabled(false);
+  ui->stop_pushButton->setEnabled(true);
+}
+
+void MainWindow::enableUiControls() {
+  ui->toggle_groupBox->setEnabled(true);
+  ui->ntoggle_groupBox->setEnabled(true);
+  ui->ext_op_args_groupBox->setEnabled(true);
+  ui->circos_bindir_plainTextEdit->setEnabled(true);
+  ui->circos_bindir_pushButton->setEnabled(true);
+  ui->conf_file_plainTextEdit->setEnabled(true);
+  ui->conf_file_pushButton->setEnabled(true);
+  ui->out_folder_plainTextEdit->setEnabled(true);
+  ui->out_folder_pushButton->setEnabled(true);
+  ui->out_file_plainTextEdit->setEnabled(true);
+  ui->edit_cmdline_checkBox->setEnabled(true);
+  ui->cmdfinal_textEdit->setEnabled(true);
+  ui->run_ncircos_button->setEnabled(true);
+  ui->Save_stdout_pushButton->setEnabled(true);
+  ui->menuBar->setEnabled(true);
+  ui->comboBox->setEnabled(true);
+  ui->imageciew_checkBox->setEnabled(true);
+  ui->circos_bindir_label->setEnabled(true);
+  ui->conf_file_label->setEnabled(true);
+  ui->out_folder_label->setEnabled(true);
+  ui->out_file_label->setEnabled(true);
+  ui->cmdline_label->setEnabled(true);
+  ui->mandatory_circosbindir_label->setEnabled(true);
+  ui->mandatory_conffile_label->setEnabled(true);
+  ui->mandatory_label->setEnabled(true);
+  ui->stop_pushButton->setEnabled(false);
+}
+
+void MainWindow::standardOutput() {
+  QString appendStdOut(process->readAllStandardOutput());
+  ui->exec_status_plainTextEdit->appendPlainText(appendStdOut);
+}
+
+void MainWindow::standardError() {
+  QString appendStdErr(process->readAllStandardError());
+  ui->exec_status_err_textEdit->appendPlainText(appendStdErr);
 }

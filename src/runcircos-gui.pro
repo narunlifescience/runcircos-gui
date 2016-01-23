@@ -29,22 +29,22 @@ TEMPLATE = app
 
 SOURCES   += main.cpp\
              mainwindow.cpp \
-             module_installer.cpp \
              aboutbox.cpp \
              iconloader.cpp \
              setbindir.cpp \
-             utils.cpp
+             utils.cpp \
+    moduleinstaller.cpp
 
 HEADERS   += mainwindow.h \
-             module_installer.h \
              aboutbox.h \
              iconloader.h \
              setbindir.h \
-             utils.h
+             utils.h \
+    moduleinstaller.h
 
 FORMS     += mainwindow.ui \
-             module_installer.ui \
     aboutbox.ui \
-    setbindir.ui
+    setbindir.ui \
+    moduleinstaller.ui
 
 RESOURCES += ../data/icons.qrc

@@ -49,7 +49,7 @@ class MainWindow : public QMainWindow {
 
     void on_nt_default_radioButton_clicked();
 
-    void updateText();
+
 
     void on_nt_png_radioButton_clicked();
 
@@ -107,7 +107,6 @@ class MainWindow : public QMainWindow {
 
 
 
-    void on_actionCheck_version_triggered();
 
     void on_actionNew_triggered();
 
@@ -117,7 +116,7 @@ class MainWindow : public QMainWindow {
 
     void updateExit();
 
-    void updateErr();
+
 
 
 
@@ -129,13 +128,7 @@ class MainWindow : public QMainWindow {
 
     void viewimage ();
 
-    void disablectrl_runtime();
 
-    void enablectrl_runtime();
-
-    void updateExitperlcheck();
-
-    void updateExitperlcheckcomplete();
 
     void on_imageciew_checkBox_clicked();
 
@@ -159,7 +152,12 @@ class MainWindow : public QMainWindow {
 
   void stopExecution();
   void installPerlModule();
-  void exit();
+  void quit();
+
+  // Perl actions
+  void checkPerlDir();
+  void checkPerlVersion();
+  void checkPerlComplete();
 
   // Set Circos bin directory
   void setBinDir();
@@ -169,7 +167,15 @@ class MainWindow : public QMainWindow {
   void quickReferanceManuel();
   void about();
 
+  // Supporting functions
+  void standardOutput();
+  void standardError();
+
  private:
+  void clearOutput();
+  void disableUiControls();
+  void enableUiControls();
+
   Ui::MainWindow *ui;
   QProcess *process;
 
