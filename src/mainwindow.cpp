@@ -22,6 +22,7 @@
 #include "setbindir.h"
 #include "iconloader.h"
 #include "module_installer.h"
+#include "utils.h"
 
 #include <QAction>
 #include <QDesktopServices>
@@ -1133,8 +1134,7 @@ void MainWindow::onlineDocumentation() {
 }
 
 void MainWindow::quickReferanceManuel() {
-  QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath()
-      + QDir::toNativeSeparators("/manuel/QRF.pdf")));
+  QDesktopServices::openUrl(QUrl(Utils::getConfigPath(Utils::Manual)));
 }
 
 void MainWindow::about() {

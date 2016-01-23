@@ -18,14 +18,19 @@
 #include "utils.h"
 
 #include <QDir>
+#include <QCoreApplication>
 
 QString Utils::getConfigPath(const Path& path) {
   QString configpath;
   switch (path) {
     case ConfFile:
-        configpath = QDir::homePath() +
-            QDir::toNativeSeparators("/.runcircos-gui/runcircos-gui.conf");
-        break;
+      configpath = QDir::homePath() +
+          QDir::toNativeSeparators("/.runcircos-gui/runcircos-gui.conf");
+      break;
+    case Manual:
+      configpath = QCoreApplication::applicationDirPath() +
+          QDir::toNativeSeparators("/manuel/QRF.pdf");
+      break;
     default:
         break;
   }
