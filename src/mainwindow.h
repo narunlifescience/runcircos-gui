@@ -19,23 +19,22 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QProcess>
 #include <QAction>
 #include <QLineEdit>
+#include <QProcess>
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+ public:
+  explicit MainWindow(QWidget *parent = 0);
+  ~MainWindow();
 
-private slots:
+ private slots:
     void on_run_ncircos_button_clicked();
 
     void on_conf_file_pushButton_clicked();
@@ -92,7 +91,7 @@ private slots:
 
     void on_t_version_radioButton_clicked();
 
-    void on_actionOnline_documentation_triggered();
+
 
     void update_cmdfinal();
 
@@ -106,7 +105,7 @@ private slots:
 
     void on_ext_op_args_plainTextEdit_textChanged();
 
-    void on_actionAbout_triggered();
+
 
     void on_actionCheck_version_triggered();
 
@@ -120,11 +119,9 @@ private slots:
 
     void updateErr();
 
-    void on_pushButton_clicked();
+
 
     void on_Save_stdout_pushButton_clicked();
-
-    void on_actionQuick_referance_manuel_QRM_triggered();
 
     void on_actionEdit_conf_file_triggered();
 
@@ -141,8 +138,6 @@ private slots:
     void updateExitperlcheckcomplete();
 
     void on_imageciew_checkBox_clicked();
-
-    void on_actionQuit_triggered();
 
     void setcircosbindirdefault ();
 
@@ -162,12 +157,37 @@ private slots:
 
     void modulecheckbashscriptExit();
 
-    void on_actionInstall_perl_package_triggered();
+  void stopExecution();
+  void installPerlModule();
+  void exit();
 
-private:
-    Ui::MainWindow *ui;
-    QProcess *process;
+  // Help & about
+  void onlineDocumentation();
+  void quickReferanceManuel();
+  void about();
 
+ private:
+  Ui::MainWindow *ui;
+  QProcess *process;
+
+  enum CircosParam {
+    BinDir,
+    OutputDir,
+    ConfFile,
+    OutputFile,
+    CommandlineFinal,
+  };
+
+  enum ToggleNegatable {
+    Png,
+    Svg,
+    Warnig,
+    ShowTick,
+    AhowTickLabel
+  };
+
+  QString circosbindir, conffile, outputdir, outfile, extopargs, to, nto_png, nto_svg, nto_warnings, nto_paranoid, nto_showticks, nto_showticklabels, cmdfinal;
+  bool image_show_status;
 };
 
 #endif // MAINWINDOW_H

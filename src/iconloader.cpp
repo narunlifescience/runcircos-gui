@@ -15,17 +15,32 @@
    along with runcircos-gui.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ICONLOADER_H
-#define ICONLOADER_H
+#include "iconloader.h"
 
-#include <QIcon>
+#include <QtDebug>
+#include <QFile>
 
-class icon_loader {
-public:
-  static QIcon load(const QString& name);
+QIcon IconLoader::load(const QString &name) {
+  QIcon ret;
 
-private:
-  icon_loader() {}
-};
+  if (name.isEmpty())
+    return ret;
 
-#endif // ICONLOADER_H 
+#if QT_VERSION >= 0x040600
+  // Try to load it from the theme initially
+  ret = QIcon::fromTheme(name);
+  if (!ret.isNull())
+    return ret;
+#endif
+
+  // Otherwise use our fallback theme
+  const QString filename(":/icons/" + name + ".png");
+  // TODO: add different size icons 16x16, 22x22 etc..
+
+  if (QFile::exists(filename))
+    ret.addFile(filename);
+
+  if (ret.isNull())
+    qDebug() << "Couldn't load icon" << name;
+  return ret;
+} 

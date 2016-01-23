@@ -18,7 +18,7 @@
 #include "module_installer.h"
 #include "ui_module_installer.h"
 
-#include "icon_loader.h"
+#include "iconloader.h"
 
 #include <QFileDialog>
 #include <QFileInfo>
@@ -32,7 +32,7 @@ module_installer::module_installer(QWidget *parent)
   ui->setupUi(this);
 
   // Load icons
-  setWindowIcon(icon_loader::load("package-install"));
+  setWindowIcon(IconLoader::load("package-install"));
 
   // Signal slot connections
   connect(ui->install_pushButton, SIGNAL(clicked()),

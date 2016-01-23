@@ -1,0 +1,4 @@
+#Remove iccp chunk to get rid of the warning:
+#libpng warning: iCCP: known incorrect sRGB profile
+
+ pngcrush -ow -rem allb -reduce <filename.png>

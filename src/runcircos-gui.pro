@@ -29,20 +29,20 @@ TEMPLATE = app
 
 SOURCES   += main.cpp\
              mainwindow.cpp \
-             about_box.cpp \
              circosbindir_set.cpp \
              module_installer.cpp \
-             icon_loader.cpp
+    aboutbox.cpp \
+    iconloader.cpp
 
 HEADERS   += mainwindow.h \
-             about_box.h \
              circosbindir_set.h \
              module_installer.h \
-             icon_loader.h
+    aboutbox.h \
+    iconloader.h
 
 FORMS     += mainwindow.ui \
-             about_box.ui \
              circosbindir_set.ui \
-             module_installer.ui
+             module_installer.ui \
+    aboutbox.ui
 
 RESOURCES += ../data/icons.qrc

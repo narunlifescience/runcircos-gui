@@ -17,72 +17,84 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "about_box.h"
-#include "circosbindir_set.h"
-#include "module_installer.h"
-#include "icon_loader.h"
 
-#include <QProcess>
-#include <QFileDialog>
-#include <QDesktopServices>
-#include <QTextStream>
+#include "aboutbox.h"
+#include "circosbindir_set.h"
+#include "iconloader.h"
+#include "module_installer.h"
+
 #include <QAction>
+#include <QDesktopServices>
+#include <QDesktopWidget>
+#include <QDir>
+#include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QDesktopWidget>
+#include <QProcess>
+#include <QTextStream>
 #include <QtCore>
 
-
-QString circosbindir, conffile, outputdir, outfile, extopargs, to, nto_png, nto_svg, nto_warnings, nto_paranoid, nto_showticks, nto_showticklabels, cmdfinal;
-bool image_show_status = false;
-
-// start mainwindow
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::MainWindow) {
+      ui(new Ui::MainWindow),
+      image_show_status(false) {
+  // start mainwindow
   ui->setupUi(this);
 
   //  Load icons
-  setWindowIcon(icon_loader::load("runcircos-gui"));
-  ui->circos_bindir_pushButton->setIcon(icon_loader::load(
+  setWindowIcon(IconLoader::load("runcircos-gui"));
+  ui->circos_bindir_pushButton->setIcon(IconLoader::load(
       "document-open-folder"));
-  ui->out_folder_pushButton->setIcon(icon_loader::load(
+  ui->out_folder_pushButton->setIcon(IconLoader::load(
       "document-open-folder"));
-  ui->conf_file_pushButton->setIcon(icon_loader::load(
+  ui->conf_file_pushButton->setIcon(IconLoader::load(
       "document-open"));
-  ui->run_ncircos_button->setIcon(icon_loader::load(
+  ui->run_ncircos_button->setIcon(IconLoader::load(
       "media-playback-start"));
-  ui->Save_stdout_pushButton->setIcon(icon_loader::load(
+  ui->Save_stdout_pushButton->setIcon(IconLoader::load(
       "document-save"));
-  ui->stop_pushButton->setIcon(icon_loader::load("stop"));
-  ui->actionNew->setIcon(icon_loader::load("document-new"));
-  ui->actionOpen_settings->setIcon(icon_loader::load(
+  ui->stop_pushButton->setIcon(IconLoader::load("stop"));
+  ui->actionNew->setIcon(IconLoader::load("document-new"));
+  ui->actionOpen_settings->setIcon(IconLoader::load(
       "document-open"));
-  ui->actionSave_settings->setIcon(icon_loader::load(
+  ui->actionSave_settings->setIcon(IconLoader::load(
       "document-save"));
-  ui->actionEdit_conf_file->setIcon(icon_loader::load(
+  ui->actionEdit_conf_file->setIcon(IconLoader::load(
       "configure"));
-  ui->actionEdit_other_files->setIcon(icon_loader::load(
+  ui->actionEdit_other_files->setIcon(IconLoader::load(
       "document-edit"));
-  ui->actionClear_exec_status->setIcon(icon_loader::load(
+  ui->actionClear_exec_status->setIcon(IconLoader::load(
       "edit-clear"));
-  ui->actionQuit->setIcon(icon_loader::load(
+  ui->actionQuit->setIcon(IconLoader::load(
       "application-exit"));
-  ui->actionCheck_version->setIcon(icon_loader::load(
+  ui->actionCheck_version->setIcon(IconLoader::load(
       "application-x-shellscript"));
-  ui->actionInstall_perl_package->setIcon(icon_loader::load(
+  ui->actionInstall_perl_package->setIcon(IconLoader::load(
       "package-install"));
-  ui->actionCommand_line_CMD->setIcon(icon_loader::load(
+  ui->actionCommand_line_CMD->setIcon(IconLoader::load(
       "terminal"));
-  ui->actionSet_circos_bin_directory->setIcon(icon_loader::load(
+  ui->actionSet_circos_bin_directory->setIcon(IconLoader::load(
       "folder"));
-  ui->actionOnline_documentation->setIcon(icon_loader::load(
+  ui->actionOnline_documentation->setIcon(IconLoader::load(
       "help-contents"));
-  ui->actionQuick_referance_manuel_QRM->setIcon(icon_loader::load(
+  ui->actionQuick_referance_manuel_QRM->setIcon(IconLoader::load(
       "application-pdf"));
-  ui->actionAbout->setIcon(icon_loader::load("help-about"));
+  ui->actionAbout->setIcon(IconLoader::load("help-about"));
 
   // Signal slot connections
+
+  connect(ui->stop_pushButton, SIGNAL(clicked()),
+          SLOT(stopExecution()));
+  connect(ui->actionInstall_perl_package, SIGNAL(triggered()),
+          SLOT(installPerlModule()));
+  connect(ui->actionQuit, SIGNAL(triggered()),
+          SLOT(exit()));
+  connect(ui->actionOnline_documentation, SIGNAL(triggered()),
+          SLOT(onlineDocumentation()));
+  connect(ui->actionQuick_referance_manuel_QRM, SIGNAL(triggered()),
+          SLOT(quickReferanceManuel()));
+  connect(ui->actionAbout, SIGNAL(triggered()),
+          SLOT(about()));
 
   QRect desktopRect = QApplication::desktop()->availableGeometry(this);
   QPoint center = desktopRect.center();
@@ -116,6 +128,8 @@ MainWindow::MainWindow(QWidget *parent)
   if (ui->conf_file_plainTextEdit->text().trimmed().count() == 0) {
     ui->conf_file_plainTextEdit->setStyleSheet("QLineEdit { border: 1px solid red; border-radius: 2px; }");
   }
+
+
   QStringList list=(QStringList()<<"png"<<"svg");
   ui->comboBox->addItems(list);
   ui->comboBox->setVisible(false);
@@ -124,9 +138,8 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 //close main window
-MainWindow::~MainWindow()
-{
-    delete ui;
+MainWindow::~MainWindow() {
+  delete ui;
 }
 
 
@@ -456,11 +469,6 @@ void MainWindow::on_t_version_radioButton_clicked()
     disablehelpmanversion();
 }
 
-void MainWindow::on_actionOnline_documentation_triggered()
-{
-   QDesktopServices::openUrl(QUrl("http://www.researcharun.com/ncircos_documentation_linux.html"));
-}
-
 void MainWindow::update_cmdfinal ()
 {
     QString tmp = ui->ext_op_args_plainTextEdit->text().trimmed();
@@ -606,13 +614,6 @@ void MainWindow::on_ext_op_args_plainTextEdit_textChanged()
     update_cmdfinal();
 }
 
-void MainWindow::on_actionAbout_triggered()
-{
-    about_box ab;
-    ab.setModal(true);
-    ab.exec();
-}
-
 void MainWindow::on_actionCheck_version_triggered()
 {
     ui->exec_status_plainTextEdit->setPlainText("");
@@ -623,7 +624,7 @@ void MainWindow::on_actionCheck_version_triggered()
     connect(process, SIGNAL(finished(int)), this, SLOT(updateExitperlcheck()));
     QString perlw = "which perl";
     process->start("bash -c \""+ perlw + "\"");
-    ui->exec_status_plainTextEdit->appendPlainText("------------------------------ PERL BIN DIRECTORY (which perl)---------------------------------");
+    ui->exec_status_plainTextEdit->appendPlainText("><><><><><><><><>< PERL BIN DIRECTORY (which perl) ><><><><><><><><><");
 }
 void MainWindow::updateExitperlcheck()
 {
@@ -633,7 +634,7 @@ void MainWindow::updateExitperlcheck()
     connect(process, SIGNAL(finished(int)), this, SLOT(updateExitperlcheckcomplete()));
     QString perlv = "perl -v";
     process->start("bash -c \""+ perlv + "\"");
-    ui->exec_status_plainTextEdit->appendPlainText("------------------------------------- PERL VERSION (perl -v)------------------------------------------");
+    ui->exec_status_plainTextEdit->appendPlainText("><><><><><><><><>< PERL VERSION (perl -v) ><><><><><><><><><");
 }
 
 void MainWindow::updateExitperlcheckcomplete()
@@ -679,14 +680,6 @@ void MainWindow::on_actionSet_circos_bin_directory_triggered()
     st.exec();
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    process->terminate();
-    if (process->pid() > 0)
-    {
-    ui->exec_status_err_textEdit->appendPlainText("*****!!! PROCESS ABORTED BY USER !!!*****");
-    }
-}
 
 void MainWindow::on_Save_stdout_pushButton_clicked()
 {
@@ -700,12 +693,6 @@ void MainWindow::on_Save_stdout_pushButton_clicked()
         stream <<"#########################*** COMMANDLINE ***##########################"<< endl << ui->cmdfinal_textEdit->toPlainText() << endl << endl << "#######################*** STANDARD OUTPUT ***########################"<< endl<< ui->exec_status_plainTextEdit->toPlainText() << endl << "#######################!!! STANDARD ERROR !!!#########################" << endl << ui->exec_status_err_textEdit->toPlainText();
         file.close();
     }
-}
-
-void MainWindow::on_actionQuick_referance_manuel_QRM_triggered()
-{
-    QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath() + "/manuel/QRF.pdf"));
-
 }
 
 void MainWindow::on_actionEdit_conf_file_triggered()
@@ -861,11 +848,6 @@ void MainWindow::on_imageciew_checkBox_clicked()
         ui->comboBox->setVisible(false);
         image_show_status = false;
     }
-}
-
-void MainWindow::on_actionQuit_triggered()
-{
-    this->close();
 }
 
 void MainWindow::setcircosbindirdefault ()
@@ -1127,9 +1109,36 @@ void MainWindow::modulecheckbashscriptExit()
     {ui->exec_status_plainTextEdit->appendPlainText("\n All perl modules/sub-modules needed to run circos are properly installed!");}
 }
 
-void MainWindow::on_actionInstall_perl_package_triggered()
-{
-    module_installer min;
-    min.setModal(true);
-    min.exec();
+void MainWindow::stopExecution() {
+  process->terminate();
+  if (process->pid() > 0) {
+    ui->exec_status_err_textEdit->appendPlainText(
+        "*****!!! PROCESS ABORTED BY USER !!!*****");
+  }
+}
+
+void MainWindow::installPerlModule() {
+  module_installer mod_installer;
+  mod_installer.setModal(true);
+  mod_installer.exec();
+}
+
+void MainWindow::exit() {
+  close();
+}
+
+void MainWindow::onlineDocumentation() {
+  QDesktopServices::openUrl(QUrl("http://www.researcharun.com/"
+                                 "ncircos_documentation_linux.html"));
+}
+
+void MainWindow::quickReferanceManuel() {
+  QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath()
+      + QDir::toNativeSeparators("/manuel/QRF.pdf")));
+}
+
+void MainWindow::about() {
+  AboutBox about;
+  about.setModal(true);
+  about.exec();
 }

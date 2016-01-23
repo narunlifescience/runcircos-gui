@@ -18,7 +18,7 @@
 #include "circosbindir_set.h"
 #include "ui_circosbindir_set.h"
 
-#include "icon_loader.h"
+#include "iconloader.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -30,8 +30,8 @@ circosbindir_set::circosbindir_set(QWidget *parent)
   ui->setupUi(this);
 
   // Load icons
-  setWindowIcon(icon_loader::load("folder"));
-  ui->setcircosbindir_pushButton->setIcon(icon_loader::load(
+  setWindowIcon(IconLoader::load("folder"));
+  ui->setcircosbindir_pushButton->setIcon(IconLoader::load(
       "document-open-folder"));
 
   // Signal slot connections

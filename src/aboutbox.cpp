@@ -15,25 +15,26 @@
    along with runcircos-gui.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ABOUT_BOX_H
-#define ABOUT_BOX_H
+#include "aboutbox.h"
+#include "ui_aboutbox.h"
 
-#include <QDialog>
+#include "iconloader.h"
 
-namespace Ui {
-  class about_box;
+AboutBox::AboutBox(QWidget *parent)
+    : QDialog(parent),
+      ui(new Ui::AboutBox) {
+  ui->setupUi(this);
+  // Load icons
+  setWindowIcon(IconLoader::load("help-about"));
+
+  // Signal slot connections
+  connect(ui->ok_pushButton, SIGNAL(clicked()), SLOT(close()));
+
+  ui->plainTextEdit->setStyleSheet("QPlainTextEdit { background-color:"
+                                   " transparent; }");
+  ui->plainTextEdit->setReadOnly(true);
 }
 
-class about_box : public QDialog
-{
-  Q_OBJECT
-
- public:
-  explicit about_box(QWidget *parent = 0);
-  ~about_box();
-
- private:
-  Ui::about_box *ui;
-};
-
-#endif // ABOUT_BOX_H
+AboutBox::~AboutBox() {
+  delete ui;
+}
