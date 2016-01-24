@@ -144,7 +144,7 @@ class MainWindow : public QMainWindow {
 
     int delete_existingfiles ();
 
-    void on_actionCommand_line_CMD_triggered();
+
 
     void chmodExit();
 
@@ -158,6 +158,7 @@ class MainWindow : public QMainWindow {
   void checkPerlDir();
   void checkPerlVersion();
   void checkPerlComplete();
+  void checkRequiredModuleInstallationStatus();
 
   // Set Circos bin directory
   void setBinDir();

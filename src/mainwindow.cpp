@@ -33,6 +33,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QTextStream>
+
 #include <QtCore>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -92,6 +93,8 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(quit()));
   connect(ui->actionCheck_version, SIGNAL(triggered()),
           SLOT(checkPerlDir()));
+  connect(ui->actionCommand_line_CMD, SIGNAL(triggered()),
+          SLOT(checkRequiredModuleInstallationStatus()));
   connect(ui->actionSet_circos_bin_directory, SIGNAL(triggered()),
           SLOT(setBinDir()));
   connect(ui->actionOnline_documentation, SIGNAL(triggered()),
@@ -100,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(quickReferanceManuel()));
   connect(ui->actionAbout, SIGNAL(triggered()),
           SLOT(about()));
+
 
   QRect desktopRect = QApplication::desktop()->availableGeometry(this);
   QPoint center = desktopRect.center();
@@ -946,64 +950,6 @@ int MainWindow::delete_existingfiles ()
     return del;
 }
 
-void MainWindow::on_actionCommand_line_CMD_triggered()
-{
-    ui->exec_status_plainTextEdit->setPlainText("");
-    ui->exec_status_err_textEdit->setPlainText("");
-    disableUiControls();
-    ui->progressBar->setMaximum(0);
-    QStringList circosdir = circosbindir.split("/");
-    QString circosdirfinal;
-    for (int i = 0; i<circosdir.size()-1; i++)
-    {
-        circosdirfinal = circosdirfinal + "/" + circosdir.at(i);
-    }
-    ui->exec_status_plainTextEdit->appendPlainText("circos/bin directory : " + circosbindir);
-    ui->exec_status_plainTextEdit->appendPlainText("\n Creating " + QDir::homePath() + "/.ncircos/testmobule_bashscript.sh bashscript ....");
-    QDir dir(QDir::homePath() + "/.ncircos");
-    if (!dir.exists()) { dir.mkpath("."); }
-    QString filename = QDir::homePath() + "/.ncircos/testmobule_bashscript.sh";
-    QFile file( filename );
-    QString first, second, final;
-    first = "#!/bin/bash";
-    second = "echo \"Required Perl Modules For running circos and their status :\"";
-    final = "awk '!/^[\\t ]*use /{next};$2~/^(lib|Circos.*|base|strict|vars|warnings);?$/{next};{sub(\";\",\"\",$2);print $2}' " + circosdirfinal.trimmed() + "/bin/circos " + circosdirfinal.trimmed() + "/lib/Circos/*pm " + circosdirfinal.trimmed() + "/lib/Circos.pm " + circosdirfinal.trimmed() + "/lib/Circos/*/*pm | sort -u | xargs -I MODULE perl -I../lib -e  'print eval \"use MODULE;1\"?\"ok   MODULE\":\"fail MODULE is not usable (it or a sub-module is missing)\\n\"'";
-    if ( file.open(QIODevice::ReadWrite| QIODevice::Truncate | QIODevice::Text) )
-    {
-        QTextStream stream( &file );
-        stream << first << endl << second << endl << final;
-        file.close();
-        ui->exec_status_plainTextEdit->appendPlainText(QDir::homePath() + "/.ncircos/testmobule_bashscript.sh bashscript file creation successfull ....");
-    }
-    ui->exec_status_plainTextEdit->appendPlainText("making the bash script executable \"chmod a+x " + QDir::homePath() + "/.ncircos/testmobule_bashscript.sh\" ....");
-    process  = new QProcess(this);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(standardOutput()));
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(standardError()));
-    connect(process, SIGNAL(finished(int)), this, SLOT(chmodExit()));
-    process->start("bash -c \"chmod a+x "+ filename + "\"");
-}
-
-void MainWindow::chmodExit()
-{
-    ui->exec_status_plainTextEdit->appendPlainText("bash script chmod successfull ....");
-    ui->exec_status_plainTextEdit->appendPlainText("Executing the bash script ....");
-    process  = new QProcess(this);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(standardOutput()));
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(standardError()));
-    connect(process, SIGNAL(finished(int)), this, SLOT(modulecheckbashscriptExit()));
-    process->start(QDir::homePath() + "/.ncircos/testmobule_bashscript.sh");
-}
-
-void MainWindow::modulecheckbashscriptExit()
-{
-    enableUiControls();
-    ui->progressBar->setMaximum(100);
-    ui->progressBar->setValue(100);
-    if(ui->exec_status_plainTextEdit->toPlainText().contains("fail") || ui->exec_status_err_textEdit->toPlainText().trimmed().count() != 0)
-    {ui->exec_status_err_textEdit->appendPlainText("Some modules/sub-modules are not poperly installed");} else
-    {ui->exec_status_plainTextEdit->appendPlainText("\n All perl modules/sub-modules needed to run circos are properly installed!");}
-}
-
 void MainWindow::stopExecution() {
   process->terminate();
   if (process->pid() > 0) {
@@ -1069,6 +1015,97 @@ void MainWindow::installPerlModule() {
   ModuleInstaller moduleinstaller;
   moduleinstaller.setModal(true);
   moduleinstaller.exec();
+}
+
+void MainWindow::checkRequiredModuleInstallationStatus() {
+  clearOutput();
+  disableUiControls();
+  ui->progressBar->setMaximum(0);
+  QStringList circosdir = circosbindir.split("/");
+  QString circosdirfinal;
+  for (int i = 0; i<circosdir.size()-1; i++) {
+    circosdirfinal = circosdirfinal + "/" + circosdir.at(i);
+  }
+  ui->exec_status_plainTextEdit->appendPlainText("circos/bin "
+      "directory : " + circosbindir);
+  ui->exec_status_plainTextEdit->appendPlainText("\n Creating "
+      + QDir::homePath() + "/.ncircos/testmobule_bashscript.sh "
+                           "bashscript ....");
+  QDir dir(QDir::homePath() + "/.ncircos");
+  if (!dir.exists()) {
+    dir.mkpath(".");
+  }
+
+  QString filename = QDir::homePath() +
+      "/.ncircos/testmobule_bashscript.sh";
+  QFile file(filename);
+  QString first, second, final;
+  first = "#!/bin/bash";
+  second = "echo \"Required Perl Modules For running circos "
+           "and their status :\"";
+  final = "awk '!/^[\\t ]*use /{next};$2~/^(lib|Circos.*|base|"
+          "strict|vars|warnings);?$/{next};{sub(\";\",\"\",$2);"
+          "print $2}' " + circosdirfinal.trimmed() +
+          "/bin/circos " + circosdirfinal.trimmed() +
+          "/lib/Circos/*pm " + circosdirfinal.trimmed() +
+          "/lib/Circos.pm " + circosdirfinal.trimmed() +
+          "/lib/Circos/*/*pm | sort -u | xargs -I MODULE perl "
+          "-I../lib -e  'print eval \"use MODULE;1\"?\"ok   "
+          "MODULE\":\"fail MODULE is not usable (it or a "
+          "sub-module is missing)\\n\"'";
+  if ( file.open(QIODevice::ReadWrite| QIODevice::Truncate
+                 | QIODevice::Text) ) {
+    QTextStream stream( &file );
+    stream << first << endl << second << endl << final;
+    file.close();
+    ui->exec_status_plainTextEdit->appendPlainText(QDir::homePath()
+        + "/.ncircos/testmobule_bashscript.sh bashscript file "
+          "creation successfull ....");
+  }
+  ui->exec_status_plainTextEdit->appendPlainText("making the bash "
+      "script executable \"chmod a+x " + QDir::homePath() +
+      "/.ncircos/testmobule_bashscript.sh\" ....");
+
+  process  = new QProcess(this);
+  connect(process, SIGNAL(readyReadStandardOutput()), this,
+          SLOT(standardOutput()));
+  connect(process, SIGNAL(readyReadStandardError()), this,
+          SLOT(standardError()));
+  connect(process, SIGNAL(finished(int)), this,
+          SLOT(chmodExit()));
+  process->start("bash -c \"chmod a+x "+ filename + "\"");
+}
+
+void MainWindow::chmodExit() {
+  ui->exec_status_plainTextEdit->appendPlainText("bash script "
+      "chmod successfull ....");
+  ui->exec_status_plainTextEdit->appendPlainText("Executing "
+      "the bash script ....");
+    process  = new QProcess(this);
+    connect(process, SIGNAL(readyReadStandardOutput()), this,
+            SLOT(standardOutput()));
+    connect(process, SIGNAL(readyReadStandardError()), this,
+            SLOT(standardError()));
+    connect(process, SIGNAL(finished(int)), this,
+            SLOT(modulecheckbashscriptExit()));
+    process->start(QDir::homePath() + "/.ncircos/testmobule_"
+                                      "bashscript.sh");
+}
+
+void MainWindow::modulecheckbashscriptExit() {
+  enableUiControls();
+  ui->progressBar->setMaximum(100);
+  ui->progressBar->setValue(100);
+  if(ui->exec_status_plainTextEdit->toPlainText().contains("fail")
+     || ui->exec_status_err_textEdit->toPlainText().trimmed().count()
+     != 0) {
+    ui->exec_status_err_textEdit->appendPlainText("Some modules/"
+        "sub-modules are not poperly installed");
+  } else {
+    ui->exec_status_plainTextEdit->appendPlainText("\n All perl "
+        "modules/sub-modules needed to run circos are properly "
+        "installed!");
+  }
 }
 
 // ><><><><><><><><>< Set Circos bin directory ><><><><><><><><><
