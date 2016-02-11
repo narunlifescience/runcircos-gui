@@ -1,4 +1,4 @@
-[![alt tag](runcircos-gui/data/icons/runcircos-gui2.png)
+[![alt tag](narunlifescience/runcircos-gui/data/icons/runcircos-gui2.png)
 # runcircos-gui
 [![Build Status](https://travis-ci.org/narunlifescience/runcircos-gui.svg?branch=master)](https://travis-ci.org/narunlifescience/runcircos-gui)  [![Build status](https://ci.appveyor.com/api/projects/status/jq6q44uggvokxmgt?svg=true)](https://ci.appveyor.com/project/narunlifescience/runcircos-gui)
 
