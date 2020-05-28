@@ -27,6 +27,6 @@ jobs:
       
     - name: Configure test project on unix
       if: (!startsWith(matrix.os, 'windows'))
-        run:|
+      run: |
           qmake
           make
