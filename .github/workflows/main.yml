@@ -12,10 +12,12 @@ jobs:
     steps:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
-
-    - uses: actions/checkout@v1
+      
+    - name: clone Repository
+      uses: actions/checkout@v1
       with:
           fetch-depth: 1
+
     - name: Configure test project on windows
       if: startsWith(matrix.os, 'windows')
       run: |
