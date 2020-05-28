@@ -16,6 +16,8 @@ jobs:
     - uses: actions/checkout@v1
       with:
           fetch-depth: 1
+    - name: Set working directory
+      working-directory: ./runcircos-gui
 
     - name: Configure test project on windows
       if: startsWith(matrix.os, 'windows')
