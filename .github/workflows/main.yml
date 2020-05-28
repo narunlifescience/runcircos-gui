@@ -13,21 +13,22 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       
-    - uses: actions/checkout@v1
+    - name: clone repository
+      uses: actions/checkout@v1
       with:
           fetch-depth: 1
-    - name: Set working directory
-      working-directory: ./runcircos-gui
 
     - name: Configure test project on windows
       if: startsWith(matrix.os, 'windows')
       run: |
           call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          cd runcircos-gui
           qmake
           make
       
     - name: Configure test project on unix
       if: (!startsWith(matrix.os, 'windows'))
       run: |
+          cd runcircos-gui
           qmake
           make
