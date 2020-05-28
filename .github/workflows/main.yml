@@ -13,8 +13,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       
-    - name: clone Repository
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v1
       with:
           fetch-depth: 1
 
