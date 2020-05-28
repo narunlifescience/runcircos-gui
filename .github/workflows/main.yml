@@ -10,31 +10,21 @@ jobs:
         os: [windows-latest, macOS-latest, ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v2
-
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
 
-  
+    - uses: actions/checkout@v1
+      with:
+          fetch-depth: 1
     - name: Configure test project on windows
       if: startsWith(matrix.os, 'windows')
       run: |
           call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          dir %Qt5_DIR%/lib/cmake
-          dir
-      shell: cmd
-    - name: TestBuildWindows
-      if: startsWith(matrix.os, 'windows')
-      run: ls
-      shell: cmd
+          qmake
+          make
       
     - name: Configure test project on unix
       if: (!startsWith(matrix.os, 'windows'))
-      run: |
-          ls $Qt5_DIR/lib/cmake
-          dir
-      shell: bash
-    - name: TestBuildUnix
-      if: (!startsWith(matrix.os, 'windows'))
-      run: ls
-      shell: cmd
+        run:|
+          qmake
+          make
