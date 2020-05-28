@@ -20,8 +20,7 @@ jobs:
 
     - name: Configure test project on windows
       if: startsWith(matrix.os, 'windows')
-      run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+      run:
           cd src
           qmake
           make
