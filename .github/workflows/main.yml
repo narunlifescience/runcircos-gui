@@ -14,7 +14,7 @@ jobs:
       uses: jurplel/install-qt-action@v2
       
     - name: clone repository
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
       with:
           fetch-depth: 1
 
@@ -22,13 +22,13 @@ jobs:
       if: startsWith(matrix.os, 'windows')
       run: |
           call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          cd runcircos-gui
+          cd src
           qmake
           make
       
     - name: Configure test project on unix
       if: (!startsWith(matrix.os, 'windows'))
       run: |
-          cd runcircos-gui
+          cd src
           qmake
           make
