@@ -11,23 +11,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v1
-      with:
-        path: ../Qt
-        key: ${{ runner.os }}-QtCache
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
-      with:
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+
   
     - name: Configure test project on windows
       if: startsWith(matrix.os, 'windows')
       run: |
           call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          dir %Qt5_DIR%/bin/qmake
+          dir %Qt5_DIR%/lib/cmake
           qmake
       shell: cmd
     - name: TestBuildWindows
@@ -38,7 +31,7 @@ jobs:
     - name: Configure test project on unix
       if: (!startsWith(matrix.os, 'windows'))
       run: |
-          ls $Qt5_DIR/bin/qmake
+          ls $Qt5_DIR/lib/cmake
           qmake
       shell: bash
     - name: TestBuildUnix
