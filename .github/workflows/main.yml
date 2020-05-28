@@ -1,4 +1,4 @@
-name: Test Installing Qt
+name: Test Build
 
 on: [push, pull_request]
 
@@ -15,8 +15,6 @@ jobs:
       
     - name: clone repository
       uses: actions/checkout@v2
-      with:
-          fetch-depth: 1
 
     - name: Configure test project on windows
       if: startsWith(matrix.os, 'windows')
